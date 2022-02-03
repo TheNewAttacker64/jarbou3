@@ -37,3 +37,6 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] run powershell commands
 - [x] spawn other programmes
 - [x] screenshot
+- [x] Keylooger
+- [x] send commands to all clients
+- [x] download file and exec  
