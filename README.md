@@ -23,3 +23,17 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 
 
 ![](Screenshots/Capture1.PNG)
+
+![](Screenshots/Capture2.PNG)
+
+## Features
+- [x] C&C server which can accept multiple clients
+- [x] builder
+- [x] Undetectable 
+- [x] Steal chrome passwords
+- [x] Steal Discord Token 
+- [x] Persistence
+- [x] download + upload files 
+- [x] run powershell commands
+- [x] spawn other programmes
+- [x] screenshot
