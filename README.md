@@ -13,4 +13,5 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 <a href="https://www.facebook.com/achihemek.achihemek/"><img title="GitHub version" src="https://img.shields.io/badge/-Facebook-blue" ></a> 
 </p>
 
+![](ratexample.png)
 
