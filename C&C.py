@@ -153,7 +153,7 @@ def target_communication(target, ip):
             keylog_start                        --> Start The Keylogger
             keylog_dump                         --> Read keylogged logs
             keylog_stop                         -->  Stop keylogger
-            open_url                            --> Open a URL
+            open_link                            --> Open a URL
             screenshot                          -->  make a screenshot
             dexec                               --> download and execute file from the internet
             start                               --> execute a programme
