@@ -40,3 +40,8 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] Keylooger
 - [x] send commands to all clients
 - [x] download file and exec  
+
+
+# Updates
+- [x] Say Function Funny Function make Client talk
+- [x] priv for checking current privileges that client have  in the system
