@@ -5,3 +5,4 @@ Pillow
 pyautogui
 cryptography
 pyinstaller
+pyttsx3
