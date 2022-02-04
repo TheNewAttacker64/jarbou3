@@ -7,3 +7,4 @@ cryptography
 pyinstaller
 pyttsx3
 scapy
+netifaces
