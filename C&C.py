@@ -263,6 +263,7 @@ while True:
     kill            --> kill session
     rmlist          --> remove disconnected target from list
     clear           --> clear the screen
+    build           --> build payload
             """)
     elif command == 'banner':
         banner()
