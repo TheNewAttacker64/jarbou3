@@ -48,3 +48,5 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] clip function change clipoard content
 - [x] builder can host:port from url should be raw
 - [x] fixed some servers bugs
+- [x] auto Persistence
+- [x] sysinfo function
