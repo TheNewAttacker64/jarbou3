@@ -51,3 +51,5 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] auto Persistence
 - [x] sysinfo function
 - [x] auto reconnect
+- [x] added function to see running process in the client system
+- [x] kill kill process in the client system   
