@@ -53,3 +53,8 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] auto reconnect
 - [x] added function to see running process in the client system
 - [x] kill kill process in the client system   
+
+# DISCLAIMER
+                                       TO BE USED FOR Education Purpose
+
+The use of the jarbou3 COMPLETE RESPONSIBILITY of the END-USER. Developers assume NO liability and are NOT responsible for any misuse or damage caused by this program. 
