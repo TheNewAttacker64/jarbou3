@@ -50,3 +50,4 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] fixed some servers bugs
 - [x] auto Persistence
 - [x] sysinfo function
+- [x] auto reconnect
