@@ -1,0 +1,9 @@
+pynput
+pypiwin32
+requests
+Pillow
+pyautogui
+cryptography
+pyinstaller
+psutil
+urllib2
