@@ -8,7 +8,7 @@ f = open('serverport.txt', 'r').read()
 if f == "{}" or "":
     serverport = input('entre serverport:')
     with open('serverport.txt', 'w') as port:
-        port.write('4444')
+        port.write(serverport)
 
 
 def replace_string(filename, old_string, new_string):
