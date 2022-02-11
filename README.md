@@ -13,6 +13,8 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 <a href="https://www.facebook.com/achihemek.achihemek/"><img title="GitHub version" src="https://img.shields.io/badge/-Facebook-blue" ></a> 
 </p>
 
+# Hints
+- [x] unrar ngrok.rar in scripts before using ngroksetup module
 
 
 # WhatisRat
@@ -46,6 +48,17 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] Say Function Funny Function make Client talk
 - [x] priv for checking current privileges that client have  in the system
 - [x] clip function change clipoard content
-- [x] scan-arp scan client network 
 - [x] builder can host:port from url should be raw
 - [x] fixed some servers bugs
+- [x] auto Persistence
+- [x] sysinfo function
+- [x] auto reconnect
+- [x] added function to see running process in the client system
+- [x] kill kill process in the client system   
+- [x] screenshare  stream target Desktop
+- [x] ngroksetup setup ngrok on target system
+- [x] changepolicy run any powershell scripts  
+# DISCLAIMER
+                                       TO BE USED FOR Education Purpose
+
+The use of the jarbou3 COMPLETE RESPONSIBILITY of the END-USER. Developers assume NO liability and are NOT responsible for any misuse or damage caused by this program. 

