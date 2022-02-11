@@ -6,4 +6,3 @@ pyautogui
 cryptography
 pyinstaller
 psutil
-urllib2
