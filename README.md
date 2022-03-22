@@ -46,6 +46,7 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 
 # Updates
 - [x] Say Function Funny Function make Client talk
+- [x] isopen check if port open on ip that connected in the client network 
 - [x] priv for checking current privileges that client have  in the system
 - [x] clip function change clipoard content
 - [x] builder can host:port from url should be raw
