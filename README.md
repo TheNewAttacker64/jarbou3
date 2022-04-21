@@ -60,6 +60,7 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] ngroksetup setup ngrok on target system
 - [x] changepolicy run any powershell scripts 
 - [x] cwallpaper change wallpaper
+- [x] server need key from client to accept connection
 # DISCLAIMER
                                        TO BE USED FOR Education Purpose
 
