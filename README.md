@@ -50,7 +50,6 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] priv for checking current privileges that client have  in the system
 - [x] clip function change clipoard content
 - [x] builder can host:port from url should be raw
-- [x] fixed some servers bugs
 - [x] auto Persistence
 - [x] sysinfo function
 - [x] auto reconnect
@@ -61,6 +60,8 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] changepolicy run any powershell scripts 
 - [x] cwallpaper change wallpaper
 - [x] server need key from client to accept connection
+- [x] fixed Server Bugs
+- [x]  server will not accept duplicated client 
 # DISCLAIMER
                                        TO BE USED FOR Education Purpose
 
