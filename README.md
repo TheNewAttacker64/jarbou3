@@ -61,7 +61,8 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] cwallpaper change wallpaper
 - [x] server need key from client to accept connection
 - [x] fixed Server Bugs
-- [x]  server will not accept duplicated client 
+- [x] server will not accept duplicated client 
+- [x} webcam_snap open target webcam   
 # DISCLAIMER
                                        TO BE USED FOR Education Purpose
 
