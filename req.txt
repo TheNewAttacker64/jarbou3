@@ -7,3 +7,4 @@ cryptography
 pyinstaller
 psutil
 opencv-python
+bottle
