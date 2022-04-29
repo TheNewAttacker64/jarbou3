@@ -950,6 +950,7 @@ def shell():
                     sys.exit()
                 else:
                     os.startfile(sys.executable)
+                    sys.exit()
             else:
                 execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                            stdin=subprocess.PIPE)
