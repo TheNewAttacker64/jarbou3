@@ -66,6 +66,7 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] webcam_list get sources of webcams
 - [x] now it use upx packer when compiling 
 - [x] bypass uac exploit 
+- [x] obfuscate C2 ip and port
 # DISCLAIMER
                                        TO BE USED FOR Education Purpose
 
