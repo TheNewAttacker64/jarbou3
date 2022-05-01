@@ -459,15 +459,15 @@ while True:
 
     elif command[:7] == 'sendall':
         x = len(targets)
-        print(x)
         i = 0
         try:
             while i < x:
                 tarnumber = targets[i]
-                print(tarnumber)
+                print("executed on "+str(ips[i][0]))
                 reliable_send(tarnumber, command)
                 i += 1
-        except:
+        except Exception as E:
+            print(str(E))
             print('Failed')
     else:
         print('[!!] Command Doesnt Exist')
