@@ -68,6 +68,7 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] bypass uac exploit 
 - [x] obfuscate C2 ip and port
 - [x] ngrok setup module fixed
+- [x] sendall func fixed
 # DISCLAIMER
                                        TO BE USED FOR Education Purpose
 
