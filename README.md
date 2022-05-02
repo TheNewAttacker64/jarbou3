@@ -69,6 +69,7 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] obfuscate C2 ip and port
 - [x] ngrok setup module fixed
 - [x] sendall func fixed
+- [x] playsound play wav file in the background (just .wav)
 # DISCLAIMER
                                        TO BE USED FOR Education Purpose
 
