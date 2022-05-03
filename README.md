@@ -70,6 +70,7 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 - [x] ngrok setup module fixed
 - [x] sendall func fixed
 - [x] playsound play wav file in the background (just .wav)
+- [x] FindFiles function find files with targeted extention on selected path in target system 
 # DISCLAIMER
                                        TO BE USED FOR Education Purpose
 
