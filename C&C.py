@@ -1,3 +1,4 @@
+import random
 import socket
 import  requests
 import json
@@ -136,7 +137,7 @@ def build():
 
 
 def banner():
-    print("""
+    banner1 = """
      ___  _______  ______    _______  _______  __   __  _______ 
     |   ||   _   ||    _ |  |  _    ||       ||  | |  ||       |
     |   ||  |_|  ||   | ||  | |_|   ||   _   ||  | |  ||___    |
@@ -144,11 +145,20 @@ def banner():
  ___|   ||       ||    __  ||  _   | |  |_|  ||       ||___    |
 |       ||   _   ||   |  | || |_|   ||       ||       | ___|   |
 |_______||__| |__||___|  |_||_______||_______||_______||_______|   
-    By youhacker55
-
-
-    """)
-
+    By youhacker55"""
+    banner2 = """
+         ) _     _
+    ( (^)-~-(^)
+__,-.\_( 6 6 )__,-.___
+  'M'   \   /   'M'
+         >o<
+       Jarbou3
+ 
+ By youhacker55
+   
+   """
+    banners = [banner1,banner2]
+    print(random.choice(banners))
 
 def reliable_recv(target):
     data = ''
