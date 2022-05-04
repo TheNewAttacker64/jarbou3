@@ -6,5 +6,4 @@ pyautogui
 cryptography
 pyinstaller
 psutil
-opencv-python
-bottle
+windows_tools.antivirus
