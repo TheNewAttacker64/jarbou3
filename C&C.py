@@ -404,6 +404,7 @@ def target_communication(target, ip):
                     bypass-uac                         --> try to bypass uac
                     findfiles                          --> example findfiles|txt|C:\\
                     playsound                          --> play wav file in the background (just .wav)
+                    av_recon                           --> Get Infos about Av
                     persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
             elif command[:11] == 'screenshare':
                 upload_file(target, 'scripts\\screenshare.ps1')
