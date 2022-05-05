@@ -7,3 +7,4 @@ cryptography
 pyinstaller
 psutil
 windows_tools.antivirus
+bottle
