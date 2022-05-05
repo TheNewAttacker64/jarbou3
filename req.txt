@@ -8,3 +8,4 @@ pyinstaller
 psutil
 windows_tools.antivirus
 bottle
+opencv-python
