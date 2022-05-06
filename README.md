@@ -30,6 +30,27 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 
 ![](Screenshots/Capture2.PNG)
 
+## How To Use in Windows
+```bash
+# Install dependencies 
+$ Install latest python 3.x
+
+# Clone this repository
+$ git clonehttps://github.com/youhacker55/jarbou3/
+
+# Go into the repository
+$ cd jarbou3
+
+# Installing dependencies
+$ run installer.bat
+
+# Run the tool
+$ open C&C.py
+
+#Build Payload
+$ type Buid in C2server
+```
+
 ## Features
 - [x] C&C server which can accept multiple clients
 - [x] builder
