@@ -30,6 +30,12 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 
 ![](Screenshots/Capture2.PNG)
 
+## Tested On
+
+[![Windows)](https://www.google.com/s2/favicons?domain=https://www.microsoft.com/en-in/windows/)](https://www.microsoft.com/en-in/windows/) **Windows 10**
+
+[![Windows)](https://www.google.com/s2/favicons?domain=https://www.microsoft.com/en-in/windows/)](https://www.microsoft.com/en-in/windows/) **Windows 8.1 - Pro**
+
 ## How To Use in Windows
 ```bash
 # Install dependencies 
