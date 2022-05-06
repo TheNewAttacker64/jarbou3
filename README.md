@@ -30,7 +30,8 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 
 ![](Screenshots/Capture2.PNG)
 
-## Tested On
+## Server Tested On
+[![Kali)](https://www.google.com/s2/favicons?domain=https://www.kali.org/)](https://www.kali.org) **Kali Linux - ROLLING EDITION (Has Some bugs Will be Fixed Soon)**
 
 [![Windows)](https://www.google.com/s2/favicons?domain=https://www.microsoft.com/en-in/windows/)](https://www.microsoft.com/en-in/windows/) **Windows 10**
 
