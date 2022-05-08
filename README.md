@@ -1,7 +1,7 @@
 # jarbou3
 Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multiple connections from clients
 
-![Jarbou3-Users](https://visitor-badge.laobi.icu/badge?page_id=page.id=youhacker55)
+
 
 <p align="center">
   <b> Follow on Social Media Platforms </b>
