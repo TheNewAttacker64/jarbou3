@@ -27,7 +27,7 @@ echo "[*] Installing Req"
 wine pip install -r req.txt
 wine pip uninstall typing
 
-echo "Now the C&C server ,If you face any issue pls feel free to report it"
+echo "Now run the C&C server ,If you face any issue pls feel free to report it"
 sleep 2
 
 
