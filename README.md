@@ -39,6 +39,20 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 
 [![Windows)](https://www.google.com/s2/favicons?domain=https://www.microsoft.com/en-in/windows/)](https://www.microsoft.com/en-in/windows/) **Windows 8.1 - Pro**
 
+
+## How To Use in Linux
+```bash
+# Install dependencies 
+$ bash installer.sh
+
+#run the C&C.py
+$python3 C&\C.py
+
+#build payload
+run build command in the C\&C.py
+
+```
+
 ## How To Use in Windows
 ```bash
 # Install dependencies 
