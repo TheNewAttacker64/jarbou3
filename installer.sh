@@ -8,8 +8,7 @@ else
     echo "[-] Check your Internet"
     exit
 fi
-echo "[*] Installing Server Req"
-pip3 install -r req.txt
+
 if which wine curl >/dev/null; then
     echo "[+] Wine and curl Already Installed"
 else
