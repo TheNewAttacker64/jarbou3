@@ -13,7 +13,7 @@ if which wine curl >/dev/null; then
     echo "[+] Wine and curl Already Installed"
 else
     echo "[*] Installing Wine and curl"
-    sudo apt install wine curl
+    sudo apt install wine curl wine32
 fi
 echo "[*] Installing python for wine"
 curl https://www.python.org/ftp/python/3.10.4/python-3.10.4-amd64.exe -o python.exe >/dev/null
