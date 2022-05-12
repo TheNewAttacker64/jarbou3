@@ -156,11 +156,6 @@ def build():
             build()
     else:
         build()
-if platform.system() == "Windows":
-    checkreqwin()
-    build()
-else:
-    build()
 
 
 
@@ -583,7 +578,12 @@ while True:
     elif command == 'banner':
         banner()
     elif command == 'build':
-        build()
+        if platform.system() == "Windows":
+            checkreqwin()
+            build()
+        else:
+            build()
+
     elif command[:6] == 'rmlist':
         try:
             targ = targets[int(command[7:])]
