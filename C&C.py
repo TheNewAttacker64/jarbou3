@@ -77,6 +77,8 @@ def build():
 
 
     else:
+        import os
+        from os.path import  isfile
         def genkey(length: int) -> bytes:
             return os.urandom(length)
 
