@@ -118,7 +118,8 @@ $ type Buid in C2server
 - [x] playsound play wav file in the background (just .wav)
 - [x] FindFiles function find files with targeted extention on selected path in target system 
 - [x] Av_recon Module get info Client Antivirus
-- [x] Get-Wifi Extract Wifi Passwords 
+- [x] Get-Wifi Extract Wifi Passwords
+- [x] Grab Cookies 
 # DISCLAIMER
                                        TO BE USED FOR Education Purpose
 
