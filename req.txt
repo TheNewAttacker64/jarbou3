@@ -10,3 +10,4 @@ windows_tools.antivirus
 bottle
 opencv-python
 pycryptodome
+playsound
