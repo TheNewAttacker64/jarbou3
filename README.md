@@ -88,9 +88,6 @@ $ type Buid in C2server
 - [x] Keylooger
 - [x] send commands to all clients
 - [x] download file and exec  
-
-
-# Updates
 - [x] Say Function Funny Function make Client talk
 - [x] isopen check if port open on ip that connected in the client network 
 - [x] priv for checking current privileges that client have  in the system
@@ -106,20 +103,20 @@ $ type Buid in C2server
 - [x] changepolicy run any powershell scripts 
 - [x] cwallpaper change wallpaper
 - [x] server need key from client to accept connection
-- [x] fixed Server Bugs
 - [x] server will not accept duplicated client 
 - [x] webcam_snap open target webcam
 - [x] webcam_list get sources of webcams
 - [x] now it use upx packer when compiling 
 - [x] bypass uac exploit 
 - [x] obfuscate C2 ip and port
-- [x] ngrok setup module fixed
 - [x] sendall func fixed
 - [x] playsound play wav file in the background (just .wav)
 - [x] FindFiles function find files with targeted extention on selected path in target system 
 - [x] Av_recon Module get info Client Antivirus
 - [x] Get-Wifi Extract Wifi Passwords
-- [x] Grab Cookies 
+- [x] Grab Cookies
+- [x] Start Http Server For Browsing Target Files
+
 # DISCLAIMER
                                        TO BE USED FOR Education Purpose
 
