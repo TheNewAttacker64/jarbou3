@@ -116,6 +116,7 @@ $ type Buid in C2server
 - [x] Get-Wifi Extract Wifi Passwords
 - [x] Grab Cookies
 - [x] Start Http Server For Browsing Target Files
+- [x] start distributed denial-of-service (DDoS) from clients
 
 # DISCLAIMER
                                        TO BE USED FOR Education Purpose
