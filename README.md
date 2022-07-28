@@ -59,7 +59,7 @@ run build command in the C\&C.py
 $ Install latest python 3.x
 
 # Clone this repository
-$ git clonehttps://github.com/youhacker55/jarbou3/
+$ git clone https://github.com/youhacker55/jarbou3/
 
 # Go into the repository
 $ cd jarbou3
