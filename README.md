@@ -5,6 +5,9 @@ Jarbou3 is  rat  tool with coded in python with C&amp;C which can accept multipl
 <p align="center">
 <p align="center">
 
+# Jarbou3 News
+
+[![Telegram](https://img.shields.io/badge/Join-Telegram-blue.svg)](https://t.me/jarbou3dev)
 
 ![](Screenshots/jarbou3.jpg)
 
